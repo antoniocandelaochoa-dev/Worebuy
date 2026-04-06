@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orders — WoreBuy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0b0f1a;--navy2:#111827;--navy3:#1a2235;--navy4:#222d42;
+  --blue:#3b82f6;--blue-light:#60a5fa;--blue-dim:rgba(59,130,246,0.12);--blue-border:rgba(59,130,246,0.25);
+  --white:#f8f9fc;--white2:rgba(248,249,252,0.72);--white3:rgba(248,249,252,0.38);--white4:rgba(248,249,252,0.14);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --green:#10b981;--red:#ef4444;--amber:#f59e0b;
+  --serif:'Libre Baskerville',Georgia,serif;--sans:'Plus Jakarta Sans',sans-serif;
+}
+body{background:var(--navy);color:var(--white);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:240px;min-height:100vh;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0}
+.sidebar-logo{padding:1.5rem 1.5rem 1rem;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--sans);font-size:1.1rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:-0.02em}
+.logo span{color:var(--blue-light)}
+.sidebar-user{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem}
+.user-av{width:36px;height:36px;border-radius:50%;background:var(--navy3);border:2px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:var(--blue-light);flex-shrink:0}
+.user-name{font-size:0.82rem;font-weight:600;color:var(--white)}
+.user-handle{font-size:0.7rem;color:var(--white3)}
+.sidebar-nav{padding:1rem 0.75rem;flex:1}
+.nav-section{font-size:0.6rem;font-weight:700;color:var(--white4);text-transform:uppercase;letter-spacing:0.12em;padding:0 0.75rem;margin:1rem 0 0.4rem}
+.nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.75rem;border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:0.82rem;font-weight:500;color:var(--white3);text-decoration:none;margin-bottom:2px}
+.nav-item:hover{background:var(--navy3);color:var(--white)}
+.nav-item.active{background:var(--blue-dim);color:var(--blue-light);border:1px solid var(--blue-border)}
+.nav-icon{width:16px;height:16px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--blue);color:white;font-size:0.62rem;font-weight:700;padding:0.1rem 0.45rem;border-radius:99px}
+
+/* MAIN */
+.main{margin-left:240px;flex:1}
+.topbar{height:64px;background:rgba(11,15,26,0.95);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:50;backdrop-filter:blur(20px)}
+.page-title{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--white)}
+.topbar-right{display:flex;align-items:center;gap:0.75rem}
+
+/* BLIND INFO BANNER */
+.blind-banner{margin:2rem 2rem 0;background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:0.85rem}
+.blind-icon{width:32px;height:32px;border-radius:8px;background:var(--blue-dim);border:1px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;margin-top:0.1rem}
+.blind-title{font-size:0.82rem;font-weight:600;color:var(--blue-light);margin-bottom:0.2rem}
+.blind-desc{font-size:0.75rem;color:var(--white2);line-height:1.6}
+
+/* CONTENT */
+.content{padding:1.5rem 2rem 4rem}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.25rem}
+.stat-label{font-size:0.68rem;font-weight:600;color:var(--white3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem}
+.stat-val{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--white);line-height:1}
+.stat-sub{font-size:0.7rem;color:var(--white3);margin-top:0.3rem}
+
+/* FILTERS */
+.filters-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.filter-tabs{display:flex;gap:0.25rem;background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:3px}
+.filter-tab{font-family:var(--sans);font-size:0.75rem;font-weight:500;background:transparent;border:none;border-radius:6px;padding:0.35rem 0.85rem;color:var(--white3);cursor:pointer;transition:all 0.2s}
+.filter-tab.on{background:var(--navy3);color:var(--white);border:1px solid var(--border2)}
+
+/* ORDER CARDS */
+.orders-list{display:flex;flex-direction:column;gap:0.75rem}
+
+.order-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s}
+.order-card:hover{border-color:var(--border2)}
+.order-card.urgent{border-color:rgba(245,158,11,0.3)}
+
+.order-header{display:grid;grid-template-columns:auto 1fr 1fr 1fr 140px;gap:1rem;padding:1rem 1.25rem;align-items:center;cursor:pointer}
+.order-header:hover .order-expand{opacity:1}
+
+.order-id-wrap{}
+.order-id{font-size:0.72rem;font-weight:700;color:var(--blue-light);font-family:monospace;margin-bottom:0.15rem}
+.order-date{font-size:0.68rem;color:var(--white3)}
+
+.order-obj{display:flex;align-items:center;gap:0.65rem}
+.order-thumb{width:36px;height:36px;border-radius:6px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;border:1px solid var(--border);flex-shrink:0}
+.order-name{font-size:0.82rem;font-weight:600;color:var(--white)}
+.order-cat{font-size:0.68rem;color:var(--white3)}
+
+.order-buyer-wrap{}
+.order-buyer-label{font-size:0.65rem;color:var(--white3);margin-bottom:0.15rem}
+.order-buyer-id{font-size:0.82rem;font-weight:500;color:var(--white)}
+.order-buyer-note{font-size:0.68rem;color:var(--blue-light)}
+
+.order-amount-wrap{}
+.order-amount{font-size:1rem;font-weight:700;color:var(--green)}
+.order-commission{font-size:0.68rem;color:var(--white3)}
+
+.order-status-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem}
+.status-pill{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.68rem;font-weight:600;padding:0.25rem 0.65rem;border-radius:99px}
+.s-pending{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:var(--amber)}
+.s-processing{background:var(--blue-dim);border:1px solid var(--blue-border);color:var(--blue-light)}
+.s-shipped{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:var(--green)}
+.s-delivered{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);color:#6ee7b7}
+.order-expand{font-size:0.7rem;color:var(--white3);opacity:0.5;transition:opacity 0.2s}
+
+/* ORDER DETAIL PANEL */
+.order-detail{border-top:1px solid var(--border);padding:1.25rem;display:none;background:var(--navy3)}
+.order-detail.open{display:block}
+
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
+
+.detail-card{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
+.detail-card-title{font-size:0.68rem;font-weight:600;color:var(--white3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem}
+.detail-card-title svg{width:12px;height:12px;opacity:0.6}
+
+/* BLIND ADDRESS */
+.address-blind{background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.address-hidden{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--white3)}
+.address-dots{letter-spacing:0.15em;font-size:1rem}
+.btn-reveal{font-family:var(--sans);font-size:0.72rem;font-weight:600;background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:6px;padding:0.35rem 0.85rem;color:var(--blue-light);cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.btn-reveal:hover{background:var(--blue);color:white;border-color:var(--blue)}
+.address-revealed{font-size:0.82rem;color:var(--white);line-height:1.7;display:none}
+.address-warning{font-size:0.68rem;color:var(--amber);margin-top:0.5rem;display:none}
+.address-timer{font-size:0.68rem;color:var(--white3);margin-top:0.4rem;display:none}
+
+/* SHIPPING FORM */
+.shipping-form{margin-top:0.75rem}
+.form-row{display:grid;grid-template-columns:1fr auto;gap:0.5rem;margin-bottom:0.5rem}
+.tracking-input{width:100%;background:var(--navy);border:1px solid var(--border2);border-radius:8px;padding:0.6rem 0.85rem;color:var(--white);font-family:var(--sans);font-size:0.82rem;outline:none;transition:border-color 0.2s}
+.tracking-input:focus{border-color:var(--blue-border)}
+.tracking-input::placeholder{color:var(--white4)}
+.btn-mark-shipped{font-family:var(--sans);font-size:0.78rem;font-weight:600;background:var(--green);color:white;border:none;border-radius:8px;padding:0.6rem 1.1rem;cursor:pointer;white-space:nowrap;transition:all 0.2s}
+.btn-mark-shipped:hover{opacity:0.85}
+.btn-mark-shipped:disabled{opacity:0.4;cursor:not-allowed}
+
+/* BUYER PANEL */
+.buyer-panel{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
+.buyer-id-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:99px;padding:0.2rem 0.65rem;font-size:0.68rem;font-weight:600;color:var(--blue-light);margin-bottom:0.65rem}
+.buyer-field{margin-bottom:0.5rem}
+.buyer-field-label{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white3);margin-bottom:0.15rem}
+.buyer-field-val{font-size:0.82rem;color:var(--white)}
+.buyer-field-val.redacted{color:var(--white3);font-style:italic;font-size:0.75rem}
+
+/* ACTIONS ROW */
+.detail-actions{display:flex;gap:0.75rem;flex-wrap:wrap}
+.btn-action{font-family:var(--sans);font-size:0.78rem;font-weight:500;border-radius:8px;padding:0.5rem 1rem;cursor:pointer;transition:all 0.2s}
+.btn-cert{color:var(--blue-light);background:transparent;border:1px solid var(--blue-border)}
+.btn-cert:hover{background:var(--blue-dim)}
+.btn-msg{color:var(--white2);background:transparent;border:1px solid var(--border2)}
+.btn-msg:hover{border-color:var(--border2);color:var(--white)}
+.btn-dispute{color:var(--red);background:transparent;border:1px solid rgba(239,68,68,0.2)}
+.btn-dispute:hover{background:rgba(239,68,68,0.08)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--navy2);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:440px;padding:1.75rem}
+.modal-title{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:0.5rem}
+.modal-sub{font-size:0.82rem;color:var(--white2);line-height:1.6;margin-bottom:1.25rem}
+.modal-warning{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:0.75rem 1rem;font-size:0.78rem;color:var(--amber);line-height:1.6;margin-bottom:1.25rem}
+.modal-address{background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:0.88rem;color:var(--white);line-height:1.8;margin-bottom:1.25rem;font-family:var(--sans)}
+.modal-footer{display:flex;gap:0.75rem;justify-content:flex-end}
+.btn-modal-cancel{font-family:var(--sans);font-size:0.82rem;font-weight:500;color:var(--white2);background:transparent;border:1px solid var(--border2);border-radius:8px;padding:0.55rem 1.1rem;cursor:pointer}
+.btn-modal-confirm{font-family:var(--sans);font-size:0.82rem;font-weight:600;color:white;background:var(--blue);border:none;border-radius:8px;padding:0.55rem 1.25rem;cursor:pointer}
+.btn-modal-confirm:hover{background:var(--blue-light)}
+.countdown{font-size:1.5rem;font-weight:700;color:var(--amber);text-align:center;margin:0.5rem 0;font-family:var(--serif)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.orders-list{animation:fadeUp 0.4s ease both}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html" class="logo">Wore<span>Buy</span></a></div>
+  <div class="sidebar-user">
+    <div class="user-av">AR</div>
+    <div><div class="user-name">Alex Ruiz</div><div class="user-handle">@alexruiz</div></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <a class="nav-item" href="worebuy-dashboard.html">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <div class="nav-section">Selling</div>
+    <a class="nav-item" href="worebuy-dashboard.html">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      My objects
+    </a>
+    <a class="nav-item active">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Orders
+      <span class="nav-badge">3</span>
+    </a>
+    <a class="nav-item" href="worebuy-dashboard.html">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Earnings
+    </a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="page-title">Orders</div>
+    <div class="topbar-right">
+      <span style="font-size:0.78rem;color:var(--white3)">3 pending action</span>
+    </div>
+  </div>
+
+  <!-- BLIND BANNER -->
+  <div class="blind-banner">
+    <div class="blind-icon">🔒</div>
+    <div>
+      <div class="blind-title">Blind connection active</div>
+      <div class="blind-desc">Buyer details are protected by WoreBuy's blind connection system. You can only see the delivery address when you're ready to ship — and only for 10 minutes. Email and personal data are never shown. This protects both you and your buyers.</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Pending shipment</div>
+        <div class="stat-val">3</div>
+        <div class="stat-sub" style="color:var(--amber)">Needs action</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">In transit</div>
+        <div class="stat-val">1</div>
+        <div class="stat-sub">Tracking active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Delivered</div>
+        <div class="stat-val">138</div>
+        <div class="stat-sub" style="color:var(--green)">All confirmed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Funds pending</div>
+        <div class="stat-val">€1,710</div>
+        <div class="stat-sub">Released on delivery</div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters-row">
+      <div class="filter-tabs">
+        <button class="filter-tab on" onclick="setFilter(this)">All</button>
+        <button class="filter-tab" onclick="setFilter(this)">Pending</button>
+        <button class="filter-tab" onclick="setFilter(this)">Shipped</button>
+        <button class="filter-tab" onclick="setFilter(this)">Delivered</button>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="orders-list">
+
+      <!-- ORDER 1 — pending, expandable -->
+      <div class="order-card urgent" id="order1">
+        <div class="order-header" onclick="toggleOrder('order1')">
+          <div class="order-id-wrap">
+            <div class="order-id">#WB-0142</div>
+            <div class="order-date">Apr 4, 2026</div>
+          </div>
+          <div class="order-obj">
+            <div class="order-thumb">🎸</div>
+            <div>
+              <div class="order-name">Fender Stratocaster</div>
+              <div class="order-cat">Musical instrument</div>
+            </div>
+          </div>
+          <div class="order-buyer-wrap">
+            <div class="order-buyer-label">Buyer</div>
+            <div class="order-buyer-id">Buyer #4821</div>
+            <div class="order-buyer-note">Identity protected</div>
+          </div>
+          <div class="order-amount-wrap">
+            <div class="order-amount">+€1,080</div>
+            <div class="order-commission">After 10% fee</div>
+          </div>
+          <div class="order-status-wrap">
+            <span class="status-pill s-pending">● Pending shipment</span>
+            <span class="order-expand">▾ Details</span>
+          </div>
+        </div>
+        <div class="order-detail open" id="detail1">
+          <div class="detail-grid">
+            <div class="detail-card">
+              <div class="detail-card-title">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Delivery address
+              </div>
+              <div class="address-blind" id="addr1-blind">
+                <div class="address-hidden">
+                  <span style="font-size:0.8rem">🔒</span>
+                  <span class="address-dots">••••••••••••••••••••</span>
+                </div>
+                <button class="btn-reveal" onclick="revealAddress('1')">Reveal to ship</button>
+              </div>
+              <div class="address-revealed" id="addr1-revealed">
+                <div style="font-size:0.85rem;line-height:1.8;color:var(--white)">
+                  María García<br>
+                  Calle Gran Vía 28, 4º B<br>
+                  28013 Madrid<br>
+                  Spain
+                </div>
+                <div class="address-warning" id="addr1-warning">⚠ Address will be hidden again in <span id="addr1-timer">10:00</span></div>
+              </div>
+              <div class="shipping-form" id="ship1-form" style="display:none">
+                <div class="form-row">
+                  <input class="tracking-input" type="text" placeholder="Tracking number (optional)" id="tracking1">
+                  <button class="btn-mark-shipped" onclick="markShipped('1')">Mark as shipped ✓</button>
+                </div>
+                <div style="font-size:0.7rem;color:var(--white3)">Pack securely · Use original box if possible · Include the printed certificate</div>
+              </div>
+            </div>
+            <div>
+              <div class="buyer-panel">
+                <div class="detail-card-title" style="margin-bottom:0.75rem">Buyer info</div>
+                <div class="buyer-id-badge">🔒 Blind connection</div>
+                <div class="buyer-field">
+                  <div class="buyer-field-label">Buyer ID</div>
+                  <div class="buyer-field-val">#4821</div>
+                </div>
+                <div class="buyer-field">
+                  <div class="buyer-field-label">Email</div>
+                  <div class="buyer-field-val redacted">Protected — never shown to creators</div>
+                </div>
+                <div class="buyer-field">
+                  <div class="buyer-field-label">WoreBuy member since</div>
+                  <div class="buyer-field-val">March 2026</div>
+                </div>
+                <div class="buyer-field">
+                  <div class="buyer-field-label">Previous purchases</div>
+                  <div class="buyer-field-val">2 verified purchases</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-actions">
+            <button class="btn-action btn-cert" onclick="window.open('worebuy-certificate.html')">View certificate</button>
+            <button class="btn-action btn-msg">Message buyer via WoreBuy</button>
+            <button class="btn-action btn-dispute">Report issue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER 2 -->
+      <div class="order-card" id="order2">
+        <div class="order-header" onclick="toggleOrder('order2')">
+          <div class="order-id-wrap">
+            <div class="order-id">#WB-0141</div>
+            <div class="order-date">Apr 1, 2026</div>
+          </div>
+          <div class="order-obj">
+            <div class="order-thumb">🧥</div>
+            <div>
+              <div class="order-name">Leather jacket</div>
+              <div class="order-cat">Clothing</div>
+            </div>
+          </div>
+          <div class="order-buyer-wrap">
+            <div class="order-buyer-label">Buyer</div>
+            <div class="order-buyer-id">Buyer #3902</div>
+            <div class="order-buyer-note">Identity protected</div>
+          </div>
+          <div class="order-amount-wrap">
+            <div class="order-amount">+€378</div>
+            <div class="order-commission">After 10% fee</div>
+          </div>
+          <div class="order-status-wrap">
+            <span class="status-pill s-pending">● Pending shipment</span>
+            <span class="order-expand">▾ Details</span>
+          </div>
+        </div>
+        <div class="order-detail" id="detail2">
+          <div class="detail-grid">
+            <div class="detail-card">
+              <div class="detail-card-title">Delivery address</div>
+              <div class="address-blind" id="addr2-blind">
+                <div class="address-hidden"><span style="font-size:0.8rem">🔒</span><span class="address-dots">••••••••••••••••••••</span></div>
+                <button class="btn-reveal" onclick="revealAddress('2')">Reveal to ship</button>
+              </div>
+              <div class="address-revealed" id="addr2-revealed">
+                <div style="font-size:0.85rem;line-height:1.8;color:var(--white)">Javier Pérez<br>Avinguda Diagonal 445<br>08036 Barcelona<br>Spain</div>
+                <div class="address-warning" id="addr2-warning">⚠ Address will be hidden again in <span id="addr2-timer">10:00</span></div>
+              </div>
+              <div class="shipping-form" id="ship2-form" style="display:none">
+                <div class="form-row">
+                  <input class="tracking-input" type="text" placeholder="Tracking number (optional)" id="tracking2">
+                  <button class="btn-mark-shipped" onclick="markShipped('2')">Mark as shipped ✓</button>
+                </div>
+              </div>
+            </div>
+            <div class="buyer-panel">
+              <div class="detail-card-title" style="margin-bottom:0.75rem">Buyer info</div>
+              <div class="buyer-id-badge">🔒 Blind connection</div>
+              <div class="buyer-field"><div class="buyer-field-label">Buyer ID</div><div class="buyer-field-val">#3902</div></div>
+              <div class="buyer-field"><div class="buyer-field-label">Email</div><div class="buyer-field-val redacted">Protected — never shown to creators</div></div>
+              <div class="buyer-field"><div class="buyer-field-label">Previous purchases</div><div class="buyer-field-val">First purchase</div></div>
+            </div>
+          </div>
+          <div class="detail-actions">
+            <button class="btn-action btn-cert" onclick="window.open('worebuy-certificate.html')">View certificate</button>
+            <button class="btn-action btn-msg">Message buyer via WoreBuy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER 3 — shipped -->
+      <div class="order-card" id="order3">
+        <div class="order-header" onclick="toggleOrder('order3')">
+          <div class="order-id-wrap">
+            <div class="order-id">#WB-0140</div>
+            <div class="order-date">Mar 28, 2026</div>
+          </div>
+          <div class="order-obj">
+            <div class="order-thumb">📷</div>
+            <div>
+              <div class="order-name">Sony WH-1000XM4</div>
+              <div class="order-cat">Tech & gear</div>
+            </div>
+          </div>
+          <div class="order-buyer-wrap">
+            <div class="order-buyer-label">Buyer</div>
+            <div class="order-buyer-id">Buyer #3105</div>
+            <div class="order-buyer-note">Identity protected</div>
+          </div>
+          <div class="order-amount-wrap">
+            <div class="order-amount">+€252</div>
+            <div class="order-commission">After 10% fee</div>
+          </div>
+          <div class="order-status-wrap">
+            <span class="status-pill s-shipped">● Shipped</span>
+            <span class="order-expand">▾ Details</span>
+          </div>
+        </div>
+        <div class="order-detail" id="detail3">
+          <div class="detail-grid">
+            <div class="detail-card">
+              <div class="detail-card-title">Shipment details</div>
+              <div style="font-size:0.82rem;color:var(--white2);margin-bottom:0.5rem">Tracking: <span style="color:var(--blue-light);font-family:monospace">ES123456789ES</span></div>
+              <div style="font-size:0.75rem;color:var(--white3)">Shipped Mar 29 · Estimated delivery Apr 2-4</div>
+              <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--white3);background:var(--navy);border-radius:6px;padding:0.6rem 0.75rem">Address permanently hidden after shipment confirmation. Funds released when buyer confirms delivery.</div>
+            </div>
+            <div class="buyer-panel">
+              <div class="detail-card-title" style="margin-bottom:0.75rem">Buyer info</div>
+              <div class="buyer-id-badge">🔒 Blind connection</div>
+              <div class="buyer-field"><div class="buyer-field-label">Buyer ID</div><div class="buyer-field-val">#3105</div></div>
+              <div class="buyer-field"><div class="buyer-field-label">Email</div><div class="buyer-field-val redacted">Protected — never shown to creators</div></div>
+            </div>
+          </div>
+          <div class="detail-actions">
+            <button class="btn-action btn-cert" onclick="window.open('worebuy-certificate.html')">View certificate</button>
+            <button class="btn-action btn-msg">Message buyer via WoreBuy</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- REVEAL MODAL -->
+<div class="modal-overlay" id="revealModal">
+  <div class="modal">
+    <div class="modal-title">Reveal delivery address</div>
+    <div class="modal-sub">You're about to access the buyer's delivery address. This is a one-time view — the address will be automatically hidden after 10 minutes or once you mark the order as shipped.</div>
+    <div class="modal-warning">⚠ This address is protected by WoreBuy's blind connection system. You may only use it to ship this order. Storing, sharing or using it for any other purpose violates our Terms of Service.</div>
+    <div class="countdown" id="modalCountdown">10:00</div>
+    <div style="font-size:0.72rem;color:var(--white3);text-align:center;margin-bottom:1.25rem">Address auto-hides when timer expires</div>
+    <div class="modal-footer">
+      <button class="btn-modal-cancel" onclick="closeRevealModal()">Cancel</button>
+      <button class="btn-modal-confirm" id="confirmRevealBtn" onclick="confirmReveal()">I understand — show address</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentRevealOrder = null;
+let revealTimers = {};
+
+function setFilter(btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function toggleOrder(id) {
+  const detail = document.getElementById('detail' + id.replace('order',''));
+  detail.classList.toggle('open');
+}
+
+function revealAddress(orderId) {
+  currentRevealOrder = orderId;
+  document.getElementById('revealModal').classList.add('open');
+  startModalCountdown();
+}
+
+function closeRevealModal() {
+  document.getElementById('revealModal').classList.remove('open');
+  currentRevealOrder = null;
+  clearInterval(window.modalTimer);
+}
+
+let modalSeconds = 600;
+function startModalCountdown() {
+  modalSeconds = 600;
+  clearInterval(window.modalTimer);
+  window.modalTimer = setInterval(() => {
+    modalSeconds--;
+    const m = Math.floor(modalSeconds / 60);
+    const s = modalSeconds % 60;
+    document.getElementById('modalCountdown').textContent = m + ':' + String(s).padStart(2,'0');
+    if (modalSeconds <= 0) { clearInterval(window.modalTimer); closeRevealModal(); }
+  }, 1000);
+}
+
+function confirmReveal() {
+  const id = currentRevealOrder;
+  closeRevealModal();
+
+  document.getElementById('addr' + id + '-blind').style.display = 'none';
+  document.getElementById('addr' + id + '-revealed').style.display = 'block';
+  document.getElementById('addr' + id + '-warning').style.display = 'block';
+  document.getElementById('ship' + id + '-form').style.display = 'block';
+
+  let secs = 600;
+  const timer = setInterval(() => {
+    secs--;
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    document.getElementById('addr' + id + '-timer').textContent = m + ':' + String(s).padStart(2,'0');
+    if (secs <= 0) {
+      clearInterval(timer);
+      hideAddress(id);
+    }
+  }, 1000);
+  revealTimers[id] = timer;
+}
+
+function hideAddress(id) {
+  document.getElementById('addr' + id + '-blind').style.display = 'flex';
+  document.getElementById('addr' + id + '-revealed').style.display = 'none';
+  document.getElementById('addr' + id + '-warning').style.display = 'none';
+  document.getElementById('ship' + id + '-form').style.display = 'none';
+  clearInterval(revealTimers[id]);
+}
+
+function markShipped(id) {
+  const tracking = document.getElementById('tracking' + id).value;
+  clearInterval(revealTimers[id]);
+
+  const card = document.getElementById('order' + id);
+  const pill = card.querySelector('.status-pill');
+  pill.className = 'status-pill s-shipped';
+  pill.textContent = '● Shipped';
+  card.classList.remove('urgent');
+
+  hideAddress(id);
+  document.getElementById('ship' + id + '-form').style.display = 'none';
+
+  const shippedMsg = document.createElement('div');
+  shippedMsg.style.cssText = 'font-size:0.78rem;color:#6ee7b7;padding:0.6rem 0.75rem;background:rgba(16,185,129,0.06);border-radius:6px;border:1px solid rgba(16,185,129,0.15);margin-top:0.5rem';
+  shippedMsg.textContent = tracking
+    ? '✓ Marked as shipped · Tracking: ' + tracking + ' · Address permanently hidden · Funds held in escrow until delivery confirmed.'
+    : '✓ Marked as shipped · Address permanently hidden · Funds held in escrow until delivery confirmed.';
+
+  document.getElementById('addr' + id + '-blind').after(shippedMsg);
+
+  const nav = document.querySelector('.nav-badge');
+  const current = parseInt(nav.textContent);
+  if (current > 1) nav.textContent = current - 1;
+  else nav.remove();
+}
+</script>
+</body>
+</html>
