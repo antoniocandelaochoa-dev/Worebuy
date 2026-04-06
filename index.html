@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoreBuy — Own what they wore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0b0f1a;--navy2:#111827;--navy3:#1a2235;--navy4:#222d42;
+  --blue:#3b82f6;--blue-light:#60a5fa;--blue-dim:rgba(59,130,246,0.12);--blue-border:rgba(59,130,246,0.25);
+  --white:#f8f9fc;--white2:rgba(248,249,252,0.72);--white3:rgba(248,249,252,0.38);--white4:rgba(248,249,252,0.14);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --green:#10b981;--red:#ef4444;
+  --serif:'Libre Baskerville',Georgia,serif;--sans:'Plus Jakarta Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--sans);font-size:1.25rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:-0.02em}
+.logo span{color:var(--blue-light)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:0.82rem;font-weight:500;color:var(--white3);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--white)}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
+.search-box{display:flex;align-items:center;gap:0.5rem;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:0.4rem 0.85rem;width:220px;transition:border-color 0.2s}
+.search-box:focus-within{border-color:var(--blue-border)}
+.search-box input{background:none;border:none;outline:none;color:var(--white);font-family:var(--sans);font-size:0.8rem;width:100%}
+.search-box input::placeholder{color:var(--white3)}
+.btn-outline{font-family:var(--sans);font-size:0.8rem;font-weight:500;color:var(--white2);background:transparent;border:1px solid var(--border2);border-radius:8px;padding:0.45rem 1rem;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.btn-outline:hover{border-color:var(--blue-border);color:var(--white)}
+.btn-blue{font-family:var(--sans);font-size:0.8rem;font-weight:600;color:white;background:var(--blue);border:none;border-radius:8px;padding:0.45rem 1.1rem;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.btn-blue:hover{background:var(--blue-light)}
+.cart-pill{display:flex;align-items:center;gap:0.4rem;font-family:var(--sans);font-size:0.8rem;font-weight:500;color:var(--white2);background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:0.45rem 1rem;cursor:pointer;transition:all 0.2s}
+.cart-pill:hover{border-color:var(--blue-border)}
+.cart-badge{background:var(--blue);color:white;font-size:0.65rem;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform 0.15s}
+
+.hero{min-height:100vh;padding-top:64px;display:grid;grid-template-columns:1fr 1fr}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 3rem 5rem 2.5rem;border-right:1px solid var(--border);position:relative}
+.hero-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 0% 60%,rgba(59,130,246,0.06) 0%,transparent 65%);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:0.5rem;background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:99px;padding:0.3rem 0.85rem;font-size:0.72rem;font-weight:600;color:var(--blue-light);letter-spacing:0.04em;text-transform:uppercase;width:fit-content;margin-bottom:1.75rem}
+.hero-tag::before{content:'●';font-size:0.5rem}
+h1{font-family:var(--serif);font-size:clamp(2.6rem,4.5vw,4.2rem);line-height:1.1;font-weight:700;color:var(--white);margin-bottom:1.5rem;letter-spacing:-0.02em}
+h1 em{font-style:italic;color:var(--blue-light)}
+.hero-sub{font-size:1rem;font-weight:400;color:var(--white2);max-width:420px;line-height:1.75;margin-bottom:2.5rem}
+.hero-actions{display:flex;gap:0.75rem;align-items:center;margin-bottom:3.5rem}
+.btn-hero{font-family:var(--sans);font-size:0.9rem;font-weight:600;color:white;background:var(--blue);border:none;border-radius:10px;padding:0.85rem 2rem;cursor:pointer;transition:all 0.2s}
+.btn-hero:hover{background:var(--blue-light);box-shadow:0 0 0 4px rgba(59,130,246,0.15)}
+.btn-hero-ghost{font-family:var(--sans);font-size:0.9rem;font-weight:500;color:var(--white2);background:transparent;border:1px solid var(--border2);border-radius:10px;padding:0.85rem 2rem;cursor:pointer;transition:all 0.2s}
+.btn-hero-ghost:hover{border-color:var(--blue-border);color:var(--white)}
+.hero-stats{display:flex;gap:2.5rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.stat-n{font-family:var(--serif);font-size:1.75rem;font-weight:700;color:var(--white);display:block;line-height:1;margin-bottom:0.3rem}
+.stat-l{font-size:0.72rem;font-weight:500;color:var(--white3);text-transform:uppercase;letter-spacing:0.08em}
+
+.hero-right{display:grid;grid-template-rows:58% 42%}
+.hero-feature{background:var(--navy2);padding:2.5rem;border-bottom:1px solid var(--border);display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.hero-feature::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(59,130,246,0.08) 0%,transparent 60%);pointer-events:none}
+.feat-num{position:absolute;top:1.5rem;right:2rem;font-family:var(--serif);font-size:6rem;font-weight:700;color:rgba(59,130,246,0.05);line-height:1;pointer-events:none;user-select:none}
+.feat-label{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);border-radius:99px;padding:0.25rem 0.7rem;font-size:0.68rem;font-weight:600;color:#10b981;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1rem;width:fit-content}
+.feat-label::before{content:'✦';font-size:0.5rem}
+.feat-title{font-family:var(--serif);font-size:1.6rem;font-weight:700;line-height:1.2;margin-bottom:0.5rem;color:var(--white)}
+.feat-who{font-size:0.8rem;color:var(--white3);margin-bottom:0.4rem}
+.feat-story{font-size:0.82rem;color:var(--white2);font-family:var(--serif);font-style:italic;line-height:1.6;margin-bottom:1.25rem}
+.feat-price{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--white)}
+.hero-mini{display:grid;grid-template-columns:1fr 1fr}
+.mini-card{padding:1.5rem 1.75rem;border-right:1px solid var(--border);cursor:pointer;transition:background 0.2s}
+.mini-card:last-child{border-right:none}
+.mini-card:hover{background:var(--navy2)}
+.mini-icon{font-size:1.5rem;margin-bottom:0.6rem;display:block}
+.mini-name{font-size:0.85rem;font-weight:600;color:var(--white);margin-bottom:0.2rem}
+.mini-by{font-size:0.72rem;color:var(--white3);margin-bottom:0.4rem}
+.mini-price{font-size:0.9rem;font-weight:700;color:var(--blue-light)}
+
+.trust-bar{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);background:var(--navy2)}
+.trust-item{padding:1.5rem 2rem;display:flex;align-items:center;gap:1rem;border-right:1px solid var(--border)}
+.trust-item:last-child{border-right:none}
+.trust-icon{width:36px;height:36px;border-radius:8px;background:var(--blue-dim);border:1px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.trust-title{font-size:0.82rem;font-weight:600;color:var(--white);margin-bottom:0.15rem}
+.trust-desc{font-size:0.72rem;color:var(--white3);line-height:1.4}
+
+.section{padding:4.5rem 2.5rem;border-bottom:1px solid var(--border)}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5rem}
+.section-title{font-family:var(--serif);font-size:1.75rem;font-weight:700;color:var(--white)}
+.see-all{font-size:0.78rem;font-weight:600;color:var(--blue-light);text-decoration:none;transition:color 0.2s}
+.see-all:hover{color:var(--white)}
+
+.creators-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+.creator-tile{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block}
+.creator-tile:hover{border-color:var(--blue-border);background:var(--navy3);transform:translateY(-2px)}
+.creator-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;margin:0 auto 0.75rem;border:2px solid var(--border2)}
+.creator-n{font-size:0.85rem;font-weight:600;color:var(--white);margin-bottom:0.15rem}
+.creator-h{font-size:0.7rem;color:var(--white3);margin-bottom:0.5rem}
+.creator-c{font-size:0.68rem;font-weight:600;color:var(--blue-light);background:var(--blue-dim);border-radius:99px;padding:0.2rem 0.6rem;display:inline-block}
+
+.filters{display:flex;gap:0.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.filter{font-family:var(--sans);font-size:0.78rem;font-weight:500;background:var(--navy2);border:1px solid var(--border);border-radius:99px;padding:0.4rem 1rem;color:var(--white3);cursor:pointer;transition:all 0.2s}
+.filter:hover{color:var(--white);border-color:var(--border2)}
+.filter.on{color:white;background:var(--blue);border-color:var(--blue)}
+
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.product{background:var(--navy2);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.2s;position:relative}
+.product:hover{border-color:var(--blue-border);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.product:hover .p-overlay{opacity:1}
+.p-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:3rem;border-bottom:1px solid var(--border);position:relative;background:var(--navy3)}
+.p-overlay{position:absolute;inset:0;background:rgba(11,15,26,0.75);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s}
+.add-btn{font-family:var(--sans);font-size:0.78rem;font-weight:600;background:var(--blue);color:white;border:none;border-radius:8px;padding:0.6rem 1.25rem;cursor:pointer}
+.verified{position:absolute;top:0.6rem;right:0.6rem;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:99px;padding:0.2rem 0.55rem;font-size:0.62rem;font-weight:600;color:#10b981}
+.p-body{padding:1rem 1.1rem}
+.p-who{font-size:0.68rem;font-weight:600;color:var(--blue-light);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.35rem}
+.p-name{font-size:0.9rem;font-weight:600;color:var(--white);margin-bottom:0.35rem;line-height:1.3}
+.p-story{font-size:0.75rem;color:var(--white3);font-family:var(--serif);font-style:italic;line-height:1.5;margin-bottom:0.75rem}
+.p-foot{display:flex;align-items:center;justify-content:space-between}
+.p-price{font-size:1rem;font-weight:700;color:var(--white)}
+.p-stock{font-size:0.68rem;font-weight:600}
+.p-stock.low{color:var(--red)}
+
+.creator-banner{margin:0 2.5rem 4.5rem;background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:3.5rem;display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;position:relative;overflow:hidden}
+.creator-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 100% 50%,rgba(59,130,246,0.07) 0%,transparent 60%);pointer-events:none}
+.banner-tag{font-size:0.7rem;font-weight:600;color:var(--blue-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem}
+.banner-title{font-family:var(--serif);font-size:2rem;font-weight:700;line-height:1.2;margin-bottom:0.75rem;color:var(--white)}
+.banner-sub{font-size:0.9rem;color:var(--white2);line-height:1.7;max-width:480px}
+.banner-actions{display:flex;flex-direction:column;gap:0.6rem;flex-shrink:0;position:relative;z-index:1}
+.btn-banner{font-family:var(--sans);font-size:0.88rem;font-weight:600;color:white;background:var(--blue);border:none;border-radius:10px;padding:0.85rem 2rem;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.btn-banner:hover{background:var(--blue-light)}
+.banner-note{font-size:0.7rem;color:var(--white3);text-align:center}
+
+footer{padding:3.5rem 2.5rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem;align-items:start;border-top:1px solid var(--border)}
+.footer-logo{font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.5rem}
+.footer-logo span{color:var(--blue-light)}
+.footer-tag{font-size:0.78rem;color:var(--white3);line-height:1.6;max-width:200px}
+.footer-col-title{font-size:0.68rem;font-weight:700;color:var(--white3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem}
+.footer-links{display:flex;flex-direction:column;gap:0.55rem}
+.footer-links a{font-size:0.82rem;color:var(--white3);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--white)}
+.footer-bottom{grid-column:1/-1;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:0.72rem;color:var(--white3)}
+.footer-tagline{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:var(--blue-light)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hero-tag{animation:fadeUp 0.5s ease both}
+h1{animation:fadeUp 0.5s ease 0.08s both}
+.hero-sub{animation:fadeUp 0.5s ease 0.16s both}
+.hero-actions{animation:fadeUp 0.5s ease 0.24s both}
+.hero-stats{animation:fadeUp 0.5s ease 0.32s both}
+
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .creators-row{grid-template-columns:repeat(3,1fr)}
+  .products-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none}
+  footer{grid-template-columns:1fr 1fr}
+  .trust-bar{grid-template-columns:1fr}
+  .creator-banner{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">Wore<span>Buy</span></a>
+  <div class="nav-links">
+    <a href="#">Explore</a>
+    <a href="#">Creators</a>
+    <a href="#">New In</a>
+    <a href="#">Sell</a>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search objects or creators...">
+    </div>
+    <a href="#" class="btn-outline">Sign in</a>
+    <a href="#" class="btn-blue">Join free</a>
+    <button class="cart-pill" onclick="void(0)">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Cart <span class="cart-badge" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Authenticated objects</div>
+    <h1>Own what your<br><em>favourite</em> creators<br>once wore</h1>
+    <p class="hero-sub">The guitar they played. The jacket they wore. Every object on WoreBuy comes directly from the creator — authenticated, storied, one of a kind.</p>
+    <div class="hero-actions">
+      <button class="btn-hero">Browse objects</button>
+      <button class="btn-hero-ghost">How it works</button>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-n">200+</span><span class="stat-l">Creators</span></div>
+      <div><span class="stat-n">1,800+</span><span class="stat-l">Objects</span></div>
+      <div><span class="stat-n">100%</span><span class="stat-l">Verified</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-feature">
+      <div class="feat-num">01</div>
+      <div class="feat-label">Object of the week</div>
+      <div class="feat-title">Fender Stratocaster<br>2023 Tour Guitar</div>
+      <div class="feat-who">Alex Ruiz · @alexruiz</div>
+      <div class="feat-story">"I played this at every single show of the summer tour. It has the scratches to prove it."</div>
+      <div class="feat-price">€1,200</div>
+    </div>
+    <div class="hero-mini">
+      <div class="mini-card"><span class="mini-icon">🧥</span><div class="mini-name">Leather jacket</div><div class="mini-by">Sara Alcántara</div><div class="mini-price">€340</div></div>
+      <div class="mini-card"><span class="mini-icon">📷</span><div class="mini-name">Olympus film camera</div><div class="mini-by">Luna Rivas</div><div class="mini-price">€280</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-icon">✦</div><div><div class="trust-title">Verified authenticity</div><div class="trust-desc">Every object reviewed and certified before listing</div></div></div>
+  <div class="trust-item"><div class="trust-icon">◈</div><div><div class="trust-title">Creator's own story</div><div class="trust-desc">The history behind every object, told by the creator</div></div></div>
+  <div class="trust-item"><div class="trust-icon">◇</div><div><div class="trust-title">Secure payments</div><div class="trust-desc">Funds released only after you confirm delivery</div></div></div>
+</div>
+
+<section class="section">
+  <div class="section-head"><h2 class="section-title">Featured creators</h2><a href="#" class="see-all">View all →</a></div>
+  <div class="creators-row">
+    <a href="#" class="creator-tile"><div class="creator-av" style="background:rgba(59,130,246,0.15);color:#60a5fa;">AR</div><div class="creator-n">Alex Ruiz</div><div class="creator-h">@alexruiz</div><div class="creator-c">8 objects</div></a>
+    <a href="#" class="creator-tile"><div class="creator-av" style="background:rgba(16,185,129,0.12);color:#10b981;">SA</div><div class="creator-n">Sara Alcántara</div><div class="creator-h">@saraalcantara</div><div class="creator-c">12 objects</div></a>
+    <a href="#" class="creator-tile"><div class="creator-av" style="background:rgba(245,158,11,0.12);color:#f59e0b;">LR</div><div class="creator-n">Luna Rivas</div><div class="creator-h">@lunarivas</div><div class="creator-c">5 objects</div></a>
+    <a href="#" class="creator-tile"><div class="creator-av" style="background:rgba(236,72,153,0.12);color:#ec4899;">MK</div><div class="creator-n">Mike Kazan</div><div class="creator-h">@mikekazan</div><div class="creator-c">9 objects</div></a>
+    <a href="#" class="creator-tile"><div class="creator-av" style="background:rgba(167,139,250,0.12);color:#a78bfa;">JP</div><div class="creator-n">Jess Prada</div><div class="creator-h">@jessprada</div><div class="creator-c">3 objects</div></a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2 class="section-title">Latest objects</h2><a href="#" class="see-all">View catalogue →</a></div>
+  <div class="filters">
+    <button class="filter on" onclick="setFilter(this)">All</button>
+    <button class="filter" onclick="setFilter(this)">Instruments</button>
+    <button class="filter" onclick="setFilter(this)">Clothing</button>
+    <button class="filter" onclick="setFilter(this)">Tech</button>
+    <button class="filter" onclick="setFilter(this)">Art</button>
+    <button class="filter" onclick="setFilter(this)">Sport</button>
+  </div>
+  <div class="products-grid">
+    <div class="product"><div class="p-img">🎸<div class="verified">✓ Verified</div><div class="p-overlay"><button class="add-btn" onclick="addToCart()">Add to cart</button></div></div><div class="p-body"><div class="p-who">Alex Ruiz</div><div class="p-name">Fender Stratocaster Tour Guitar</div><div class="p-story">"Played at every show of the 2023 summer tour."</div><div class="p-foot"><span class="p-price">€1,200</span><span class="p-stock low">1 left</span></div></div></div>
+    <div class="product"><div class="p-img">🧥<div class="verified">✓ Verified</div><div class="p-overlay"><button class="add-btn" onclick="addToCart()">Add to cart</button></div></div><div class="p-body"><div class="p-who">Sara Alcántara</div><div class="p-name">Signature leather jacket</div><div class="p-story">"Worn in every shoot since 2021. My most iconic piece."</div><div class="p-foot"><span class="p-price">€340</span><span class="p-stock low">1 left</span></div></div></div>
+    <div class="product"><div class="p-img">📷<div class="verified">✓ Verified</div><div class="p-overlay"><button class="add-btn" onclick="addToCart()">Add to cart</button></div></div><div class="p-body"><div class="p-who">Luna Rivas</div><div class="p-name">Olympus OM-1 film camera</div><div class="p-story">"Shot my first professional photos with this camera."</div><div class="p-foot"><span class="p-price">€280</span><span class="p-stock low">1 left</span></div></div></div>
+    <div class="product"><div class="p-img">👟<div class="verified">✓ Verified</div><div class="p-overlay"><button class="add-btn" onclick="addToCart()">Add to cart</button></div></div><div class="p-body"><div class="p-who">Mike Kazan</div><div class="p-name">Signed Air Jordan 1s</div><div class="p-story">"Wore these at the Madrid tournament in 2022."</div><div class="p-foot"><span class="p-price">€520</span><span class="p-stock low">1 left</span></div></div></div>
+  </div>
+</section>
+
+<div class="creator-banner">
+  <div>
+    <div class="banner-tag">For creators</div>
+    <h3 class="banner-title">Got objects<br>with a story?</h3>
+    <p class="banner-sub">Link your profile, list your object, tell its story. Your fans get something genuinely yours — and you earn directly from it.</p>
+  </div>
+  <div class="banner-actions">
+    <button class="btn-banner">Create my profile</button>
+    <span class="banner-note">Free to join · Commission only on sales</span>
+  </div>
+</div>
+
+<footer>
+  <div><div class="footer-logo">Wore<span>Buy</span></div><div class="footer-tag">Own what the people you follow once held.</div></div>
+  <div><div class="footer-col-title">Explore</div><div class="footer-links"><a href="#">New objects</a><a href="#">Featured creators</a><a href="#">Instruments</a><a href="#">Clothing</a></div></div>
+  <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="#">How it works</a><a href="#">Authentication</a><a href="#">Shipping</a><a href="#">Contact</a></div></div>
+  <div><div class="footer-col-title">Creators</div><div class="footer-links"><a href="#">Create profile</a><a href="#">Seller dashboard</a><a href="#">Verification</a><a href="#">Terms</a></div></div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 WoreBuy. All rights reserved.</span><span class="footer-tagline">Own what they wore.</span></div>
+</footer>
+
+<script>
+function setFilter(btn){document.querySelectorAll('.filter').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+function addToCart(){const c=document.getElementById('cartCount');c.textContent=parseInt(c.textContent)+1;c.style.transform='scale(1.5)';setTimeout(()=>c.style.transform='scale(1)',200)}
+</script>
+</body>
+</html>
