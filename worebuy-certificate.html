@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate of Authenticity — WoreBuy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0b0f1a;--navy2:#111827;--navy3:#1a2235;
+  --blue:#3b82f6;--blue-light:#60a5fa;--blue-dim:rgba(59,130,246,0.1);--blue-border:rgba(59,130,246,0.25);
+  --white:#f8f9fc;--white2:rgba(248,249,252,0.72);--white3:rgba(248,249,252,0.38);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --doc:#ffffff;--doc2:#f7f8fa;--doc3:#eef0f4;
+  --ink:#0d1117;--ink2:#24292f;--ink3:#57606a;
+  --green:#10b981;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* NAV */
+nav{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;border-bottom:1px solid var(--border);background:rgba(11,15,26,0.95);backdrop-filter:blur(20px)}
+.logo{font-family:var(--sans);font-size:1.25rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:-0.02em}
+.logo span{color:var(--blue-light)}
+.nav-tag{font-size:0.72rem;font-weight:500;color:var(--white3);letter-spacing:0.1em;text-transform:uppercase}
+.nav-right{display:flex;gap:0.75rem}
+.btn-sm{font-family:var(--sans);font-size:0.78rem;font-weight:500;background:transparent;border:1px solid var(--border2);border-radius:8px;padding:0.4rem 1rem;color:var(--white2);cursor:pointer;transition:all 0.2s;text-decoration:none}
+.btn-sm:hover{border-color:var(--blue-border);color:var(--white)}
+.btn-sm-blue{font-family:var(--sans);font-size:0.78rem;font-weight:600;background:var(--blue);border:none;border-radius:8px;padding:0.4rem 1rem;color:white;cursor:pointer;transition:all 0.2s}
+.btn-sm-blue:hover{background:var(--blue-light)}
+
+/* PAGE */
+.page{max-width:760px;margin:0 auto;padding:2.5rem 1.5rem}
+
+/* CERT WRAPPER */
+.cert-wrap{background:var(--doc);border-radius:4px;overflow:hidden;box-shadow:0 4px 60px rgba(0,0,0,0.4)}
+
+/* CERT TOP BAND — navy */
+.cert-topband{background:var(--navy2);padding:1.75rem 2.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--blue)}
+.ctb-left{display:flex;flex-direction:column;gap:0.25rem}
+.ctb-issuer{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white3)}
+.ctb-brand{font-family:var(--sans);font-size:1.2rem;font-weight:700;color:var(--white);letter-spacing:-0.02em}
+.ctb-brand span{color:var(--blue-light)}
+.ctb-tagline{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:var(--white3)}
+.ctb-right{text-align:right}
+.ctb-serial-label{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--white3);margin-bottom:0.25rem}
+.ctb-serial{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--blue-light);letter-spacing:0.06em}
+
+/* CERT BODY — light document */
+.cert-body{background:var(--doc);color:var(--ink)}
+
+/* TITLE SECTION */
+.cert-title-sec{padding:2.25rem 2.5rem 2rem;text-align:center;border-bottom:1px solid var(--doc3);position:relative;overflow:hidden}
+.cert-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-12deg);font-family:var(--serif);font-size:7rem;font-weight:600;color:rgba(59,130,246,0.04);pointer-events:none;user-select:none;white-space:nowrap;letter-spacing:0.15em}
+.cert-title-eyebrow{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem;justify-content:center;position:relative}
+.cert-title-eyebrow::before,.cert-title-eyebrow::after{content:'';flex:1;max-width:50px;height:0.5px;background:#dde0e6}
+.cert-title{font-family:var(--serif);font-size:2.5rem;font-weight:300;line-height:1.1;color:var(--ink);margin-bottom:0.4rem;position:relative}
+.cert-subtitle{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--ink3);margin-bottom:1.5rem;position:relative}
+.verified-pill{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.2);border-radius:99px;padding:0.3rem 0.85rem;font-size:0.7rem;font-weight:600;color:#059669;position:relative}
+.verified-dot{width:5px;height:5px;border-radius:50%;background:#10b981}
+
+/* FIELDS */
+.cert-fields{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--doc3)}
+.cert-field-col{padding:1.75rem 2.5rem}
+.cert-field-col:first-child{border-right:1px solid var(--doc3)}
+.field-group{margin-bottom:1.25rem}
+.field-group:last-child{margin-bottom:0}
+.field-label{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.3rem}
+.field-val{font-family:var(--serif);font-size:1rem;color:var(--ink);line-height:1.3}
+.field-val.bold{font-size:1.2rem;font-weight:600}
+.field-val.blue{color:var(--blue)}
+.field-val.mono{font-family:monospace;font-size:0.82rem;color:var(--ink2)}
+
+/* STORY */
+.cert-story{padding:1.75rem 2.5rem;background:var(--doc2);border-bottom:1px solid var(--doc3)}
+.story-lbl{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.65rem}
+.story-quote{font-family:var(--serif);font-style:italic;font-size:1.05rem;line-height:1.8;color:var(--ink2);padding-left:1.25rem;border-left:2px solid var(--blue);margin-bottom:0.5rem}
+.story-by{font-size:0.75rem;color:var(--ink3);padding-left:1.25rem}
+
+/* SIGNATURES */
+.cert-sigs{display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;padding:1.75rem 2.5rem;align-items:center;border-bottom:1px solid var(--doc3)}
+.sig-block{text-align:center}
+.sig-line{height:0.5px;background:var(--ink);opacity:0.15;margin-bottom:0.4rem}
+.sig-name{font-family:var(--serif);font-size:1rem;font-style:italic;color:var(--ink);margin-bottom:0.15rem}
+.sig-role{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3)}
+.qr-block{display:flex;flex-direction:column;align-items:center;gap:0.4rem}
+.qr-inner{width:72px;height:72px;border:1px solid var(--doc3);padding:3px;border-radius:2px}
+.qr-lbl{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+
+/* BOTTOM STRIP — navy */
+.cert-bottomstrip{background:var(--navy3);padding:0.75rem 2.5rem;display:flex;align-items:center;justify-content:space-between}
+.cbs-text{font-size:0.65rem;color:var(--white3)}
+.cbs-hash{font-size:0.62rem;color:rgba(255,255,255,0.2);font-family:monospace;letter-spacing:0.06em}
+
+/* ACTIONS */
+.actions{display:flex;gap:0.75rem;margin-top:1.75rem;justify-content:center}
+.btn-action{font-family:var(--sans);font-size:0.8rem;font-weight:500;border-radius:8px;padding:0.6rem 1.4rem;cursor:pointer;transition:all 0.2s}
+.btn-print{color:var(--white2);background:transparent;border:1px solid var(--border2)}
+.btn-print:hover{border-color:var(--blue-border);color:var(--white)}
+.btn-dl{color:white;background:var(--blue);border:none}
+.btn-dl:hover{background:var(--blue-light)}
+.btn-share{color:var(--blue-light);background:transparent;border:1px solid var(--blue-border)}
+.btn-share:hover{background:var(--blue-dim)}
+
+/* VERIFY PANEL */
+.verify-panel{margin-top:1.5rem;background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:1.5rem 2rem}
+.verify-title{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--white3);margin-bottom:1rem}
+.verify-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.6rem}
+.verify-row:last-child{margin-bottom:0}
+.vcheck{width:20px;height:20px;border-radius:50%;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#10b981;flex-shrink:0}
+.vtext{font-size:0.8rem;color:var(--white2)}
+.vtext strong{color:var(--white);font-weight:500}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.cert-wrap{animation:fadeUp 0.5s ease both}
+.actions{animation:fadeUp 0.5s ease 0.15s both}
+.verify-panel{animation:fadeUp 0.5s ease 0.25s both}
+
+@media print{
+  body{background:white}
+  nav,.actions,.verify-panel{display:none}
+  .page{padding:0}
+  .cert-wrap{box-shadow:none}
+  .cert-topband{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cert-bottomstrip{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Wore<span>Buy</span></a>
+  <span class="nav-tag">Certificate of Authenticity</span>
+  <div class="nav-right">
+    <a href="index.html" class="btn-sm">← Back</a>
+    <button class="btn-sm-blue" onclick="window.print()">Print</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="cert-wrap">
+
+    <!-- TOP BAND (navy) -->
+    <div class="cert-topband">
+      <div class="ctb-left">
+        <span class="ctb-issuer">Issued by</span>
+        <div class="ctb-brand">Wore<span>Buy</span></div>
+        <div class="ctb-tagline">Objects held by the ones you follow</div>
+      </div>
+      <div class="ctb-right">
+        <div class="ctb-serial-label">Certificate No.</div>
+        <div class="ctb-serial" id="certSerial">WB-2026-001428</div>
+      </div>
+    </div>
+
+    <div class="cert-body">
+
+      <!-- TITLE -->
+      <div class="cert-title-sec">
+        <div class="cert-wm">AUTHENTIC</div>
+        <div class="cert-title-eyebrow">This certifies that</div>
+        <div class="cert-title" id="certObjectName">Fender Stratocaster<br>2023 Tour Guitar</div>
+        <div class="cert-subtitle" id="certObjectSub">is an authenticated object from Alex Ruiz</div>
+        <span class="verified-pill"><span class="verified-dot"></span> Verified by WoreBuy · April 2026</span>
+      </div>
+
+      <!-- FIELDS -->
+      <div class="cert-fields">
+        <div class="cert-field-col">
+          <div class="field-group">
+            <div class="field-label">Original owner</div>
+            <div class="field-val bold" id="certCreator">Alex Ruiz</div>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Verified profile</div>
+            <div class="field-val blue" id="certHandle">@alexruiz · OnlyFans</div>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Category</div>
+            <div class="field-val" id="certCategory">Musical instrument</div>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Verification date</div>
+            <div class="field-val" id="certDate">April 6, 2026</div>
+          </div>
+        </div>
+        <div class="cert-field-col">
+          <div class="field-group">
+            <div class="field-label">Transfer date</div>
+            <div class="field-val" id="certTransfer">April 6, 2026</div>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Authenticated value</div>
+            <div class="field-val bold blue" id="certPrice">€1,200</div>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Transaction ID</div>
+            <div class="field-val mono" id="certTx">WB-TX-9f2a4c8e</div>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Registered to</div>
+            <div class="field-val" id="certOwner">Verified buyer · ID #4821</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STORY -->
+      <div class="cert-story">
+        <div class="story-lbl">Creator's statement</div>
+        <div class="story-quote" id="certStory">"I played this guitar at every single show of the 2023 summer tour across Spain and Portugal. Fourteen shows in six weeks. The scratches on the body are from the last night in Barcelona. It's the most played guitar I've ever owned and I wanted it to go to someone who would appreciate what it's been through."</div>
+        <div class="story-by" id="certStoryAttr">— Alex Ruiz, statement recorded April 2026</div>
+      </div>
+
+      <!-- SIGNATURES + QR -->
+      <div class="cert-sigs">
+        <div class="sig-block">
+          <div class="sig-line"></div>
+          <div class="sig-name" id="sigCreator">Alex Ruiz</div>
+          <div class="sig-role">Original owner</div>
+        </div>
+        <div class="qr-block">
+          <div class="qr-inner" id="qrCode"></div>
+          <div class="qr-lbl">Scan to verify</div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-line"></div>
+          <div class="sig-name">WoreBuy</div>
+          <div class="sig-role">Authentication authority</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM STRIP (navy) -->
+    <div class="cert-bottomstrip">
+      <span class="cbs-text">Non-transferable · Tied to registered buyer's account · worebuy.com</span>
+      <span class="cbs-hash" id="certHash">SHA: a3f9d2c8e1b47f6a</span>
+    </div>
+
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="btn-action btn-print" onclick="window.print()">Print certificate</button>
+    <button class="btn-action btn-dl" onclick="window.print()">Download PDF</button>
+    <button class="btn-action btn-share" onclick="shareCert()">Share</button>
+  </div>
+
+  <!-- VERIFY PANEL -->
+  <div class="verify-panel">
+    <div class="verify-title">Verification log</div>
+    <div class="verify-row"><div class="vcheck">✓</div><div class="vtext"><strong>Object verified</strong> — physical inspection completed by WoreBuy team before listing</div></div>
+    <div class="verify-row"><div class="vcheck">✓</div><div class="vtext"><strong>Creator identity confirmed</strong> — @alexruiz verified via OnlyFans account ownership</div></div>
+    <div class="verify-row"><div class="vcheck">✓</div><div class="vtext"><strong>Payment secured</strong> — processed via Stripe Connect, funds held in escrow until delivery confirmed</div></div>
+    <div class="verify-row"><div class="vcheck">✓</div><div class="vtext"><strong>Certificate integrity</strong> — hash <span style="font-family:monospace;font-size:0.75rem">a3f9d2c8e1b47f6a</span> recorded at issue, tamper-proof</div></div>
+  </div>
+
+</div>
+
+<script>
+const verifyUrl = window.location.origin + '/verify?cert=WB-2026-001428';
+new QRCode(document.getElementById('qrCode'), {
+  text: verifyUrl,
+  width: 66,
+  height: 66,
+  colorDark: '#0d1117',
+  colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
+
+function shareCert() {
+  if (navigator.share) {
+    navigator.share({title:'Certificate of Authenticity — WoreBuy',text:'Authenticated object from Alex Ruiz, verified by WoreBuy.',url:window.location.href});
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copied to clipboard');
+  }
+}
+
+const p = new URLSearchParams(window.location.search);
+if(p.get('creator')){document.getElementById('certCreator').textContent=p.get('creator');document.getElementById('sigCreator').textContent=p.get('creator')}
+if(p.get('object'))document.getElementById('certObjectName').innerHTML=p.get('object');
+if(p.get('price'))document.getElementById('certPrice').textContent=p.get('price');
+if(p.get('serial')){document.getElementById('certSerial').textContent=p.get('serial');document.getElementById('certHash').textContent='SHA: '+p.get('serial').toLowerCase().replace(/-/g,'')}
+</script>
+</body>
+</html>
