@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fender Stratocaster Tour Guitar — WoreBuy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0b0f1a;--navy2:#111827;--navy3:#1a2235;--navy4:#222d42;
+  --blue:#3b82f6;--blue-light:#60a5fa;--blue-dim:rgba(59,130,246,0.12);--blue-border:rgba(59,130,246,0.25);
+  --white:#f8f9fc;--white2:rgba(248,249,252,0.72);--white3:rgba(248,249,252,0.38);--white4:rgba(248,249,252,0.14);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --green:#10b981;--red:#ef4444;
+  --serif:'Libre Baskerville',Georgia,serif;--sans:'Plus Jakarta Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--sans);font-size:1.25rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:-0.02em}
+.logo span{color:var(--blue-light)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:0.82rem;font-weight:500;color:var(--white3);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--white)}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
+.btn-outline{font-family:var(--sans);font-size:0.8rem;font-weight:500;color:var(--white2);background:transparent;border:1px solid var(--border2);border-radius:8px;padding:0.45rem 1rem;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.btn-outline:hover{border-color:var(--blue-border);color:var(--white)}
+.btn-blue{font-family:var(--sans);font-size:0.8rem;font-weight:600;color:white;background:var(--blue);border:none;border-radius:8px;padding:0.45rem 1.1rem;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.btn-blue:hover{background:var(--blue-light)}
+.cart-pill{display:flex;align-items:center;gap:0.4rem;font-family:var(--sans);font-size:0.8rem;font-weight:500;color:var(--white2);background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:0.45rem 1rem;cursor:pointer;transition:all 0.2s}
+.cart-pill:hover{border-color:var(--blue-border)}
+.cart-badge{background:var(--blue);color:white;font-size:0.65rem;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform 0.15s}
+
+/* BREADCRUMB */
+.breadcrumb{padding:5.5rem 2.5rem 0;display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--white3)}
+.breadcrumb a{color:var(--white3);text-decoration:none;transition:color 0.2s}
+.breadcrumb a:hover{color:var(--blue-light)}
+.breadcrumb span{color:var(--white4)}
+
+/* MAIN LAYOUT */
+.product-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;padding:2rem 2.5rem 5rem;max-width:1280px;margin:0 auto}
+
+/* LEFT — GALLERY */
+.gallery{display:flex;flex-direction:column;gap:1rem;position:sticky;top:80px;align-self:start}
+.gallery-main{background:var(--navy2);border:1px solid var(--border);border-radius:16px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:7rem;position:relative;overflow:hidden}
+.gallery-main::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(59,130,246,0.07) 0%,transparent 60%)}
+.verified-badge{position:absolute;top:1rem;left:1rem;display:flex;align-items:center;gap:0.4rem;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.35);border-radius:99px;padding:0.35rem 0.85rem;font-size:0.7rem;font-weight:700;color:var(--green);letter-spacing:0.04em}
+.verified-badge::before{content:'✓'}
+.cert-badge{position:absolute;top:1rem;right:1rem;background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:8px;padding:0.35rem 0.7rem;font-size:0.65rem;font-weight:600;color:var(--blue-light);cursor:pointer;transition:all 0.2s}
+.cert-badge:hover{background:rgba(59,130,246,0.2)}
+.gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem}
+.thumb{background:var(--navy2);border:1px solid var(--border);border-radius:10px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:1.75rem;cursor:pointer;transition:all 0.2s}
+.thumb:hover,.thumb.active{border-color:var(--blue-border);background:var(--navy3)}
+
+/* RIGHT — INFO */
+.product-info{display:flex;flex-direction:column;gap:1.75rem}
+
+.product-top{}
+.product-by{font-size:0.72rem;font-weight:700;color:var(--blue-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem}
+.product-name{font-family:var(--serif);font-size:2.2rem;font-weight:700;line-height:1.15;color:var(--white);margin-bottom:0.75rem}
+.product-story{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--white2);line-height:1.75;border-left:2px solid var(--blue-border);padding-left:1rem}
+
+.price-row{display:flex;align-items:center;gap:1.25rem}
+.price-big{font-family:var(--serif);font-size:2.75rem;font-weight:700;color:var(--white)}
+.stock-tag{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:99px;padding:0.3rem 0.85rem;font-size:0.7rem;font-weight:700;color:var(--red)}
+
+/* PLATFORM LINKS — SEEN ON */
+.seen-on{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem}
+.seen-on-title{font-size:0.68rem;font-weight:700;color:var(--white3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem}
+.platform-links{display:flex;flex-direction:column;gap:0.6rem}
+.platform-btn{display:flex;align-items:center;gap:0.85rem;padding:0.75rem 1rem;border-radius:10px;border:1px solid var(--border2);text-decoration:none;transition:all 0.2s;cursor:pointer;background:transparent;width:100%;font-family:var(--sans)}
+.platform-btn:hover{border-color:var(--blue-border);background:var(--navy3);transform:translateX(2px)}
+.platform-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+.platform-icon.of{background:#00AFF0;} /* OnlyFans blue */
+.platform-icon.fansly{background:#1DA0F2;}
+.platform-icon.instagram{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);}
+.platform-icon.twitter{background:#000;}
+.platform-icon.youtube{background:#FF0000;}
+.platform-icon.tiktok{background:#000;}
+.platform-icon svg{width:18px;height:18px;fill:white}
+.platform-text{flex:1;text-align:left}
+.platform-name{font-size:0.82rem;font-weight:600;color:var(--white);display:block;line-height:1.2}
+.platform-desc{font-size:0.7rem;color:var(--white3);display:block}
+.platform-arrow{font-size:0.75rem;color:var(--white3);transition:color 0.2s}
+.platform-btn:hover .platform-arrow{color:var(--blue-light)}
+
+/* CTA */
+.cta-block{display:flex;flex-direction:column;gap:0.75rem}
+.btn-buy{font-family:var(--sans);font-size:1rem;font-weight:700;color:white;background:var(--blue);border:none;border-radius:12px;padding:1rem 2rem;cursor:pointer;transition:all 0.2s;width:100%;letter-spacing:0.01em}
+.btn-buy:hover{background:var(--blue-light);box-shadow:0 0 0 4px rgba(59,130,246,0.15)}
+.btn-wish{font-family:var(--sans);font-size:0.88rem;font-weight:500;color:var(--white2);background:transparent;border:1px solid var(--border2);border-radius:12px;padding:0.85rem 2rem;cursor:pointer;transition:all 0.2s;width:100%}
+.btn-wish:hover{border-color:var(--blue-border);color:var(--white)}
+.cta-note{font-size:0.72rem;color:var(--white3);text-align:center;line-height:1.5}
+
+/* OBJECT DETAILS */
+.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
+.detail-item{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem}
+.detail-label{font-size:0.65rem;font-weight:700;color:var(--white3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.2rem}
+.detail-val{font-size:0.85rem;font-weight:600;color:var(--white)}
+
+/* CREATOR CARD */
+.creator-card{display:flex;align-items:center;gap:1rem;background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:1.25rem;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.creator-card:hover{border-color:var(--blue-border);background:var(--navy3)}
+.creator-av{width:48px;height:48px;border-radius:50%;background:rgba(59,130,246,0.15);border:2px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:var(--blue-light);flex-shrink:0}
+.creator-info{flex:1}
+.creator-name{font-size:0.9rem;font-weight:600;color:var(--white);margin-bottom:0.1rem}
+.creator-handle{font-size:0.72rem;color:var(--white3)}
+.creator-meta{display:flex;gap:0.75rem;margin-top:0.35rem}
+.creator-stat{font-size:0.68rem;font-weight:600;color:var(--blue-light);background:var(--blue-dim);border-radius:99px;padding:0.15rem 0.5rem}
+.creator-arrow{color:var(--white3);font-size:0.9rem}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border)}
+
+/* BELOW FOLD — FULL WIDTH */
+.below-fold{padding:0 2.5rem 5rem;max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:3rem}
+.section-title{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--white);margin-bottom:1.5rem}
+
+/* REVIEWS */
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.review-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.review-stars{color:#f59e0b;font-size:0.8rem;margin-bottom:0.5rem;letter-spacing:0.1em}
+.review-text{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:var(--white2);line-height:1.6;margin-bottom:0.75rem}
+.review-by{font-size:0.7rem;font-weight:600;color:var(--white3)}
+
+/* MORE OBJECTS */
+.more-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.product{background:var(--navy2);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.2s;position:relative}
+.product:hover{border-color:var(--blue-border);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.p-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;border-bottom:1px solid var(--border);position:relative;background:var(--navy3)}
+.verified{position:absolute;top:0.6rem;right:0.6rem;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:99px;padding:0.2rem 0.55rem;font-size:0.62rem;font-weight:600;color:#10b981}
+.p-body{padding:1rem 1.1rem}
+.p-who{font-size:0.68rem;font-weight:600;color:var(--blue-light);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.35rem}
+.p-name{font-size:0.88rem;font-weight:600;color:var(--white);margin-bottom:0.5rem;line-height:1.3}
+.p-foot{display:flex;align-items:center;justify-content:space-between}
+.p-price{font-size:0.95rem;font-weight:700;color:var(--white)}
+.p-stock{font-size:0.68rem;font-weight:600;color:var(--red)}
+
+/* FOOTER */
+footer{padding:3.5rem 2.5rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem;align-items:start;border-top:1px solid var(--border)}
+.footer-logo{font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.5rem}
+.footer-logo span{color:var(--blue-light)}
+.footer-tag{font-size:0.78rem;color:var(--white3);line-height:1.6;max-width:200px}
+.footer-col-title{font-size:0.68rem;font-weight:700;color:var(--white3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem}
+.footer-links{display:flex;flex-direction:column;gap:0.55rem}
+.footer-links a{font-size:0.82rem;color:var(--white3);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--white)}
+.footer-bottom{grid-column:1/-1;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:0.72rem;color:var(--white3)}
+.footer-tagline{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:var(--blue-light)}
+
+@media(max-width:1024px){
+  .product-wrap{grid-template-columns:1fr;gap:2rem}
+  .gallery{position:static}
+  .reviews-grid{grid-template-columns:1fr}
+  .more-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none}
+  footer{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .product-wrap{padding:2rem 1rem 4rem}
+  .below-fold{padding:0 1rem 4rem}
+  .breadcrumb{padding:5.5rem 1rem 0}
+  .more-grid{grid-template-columns:1fr 1fr}
+  .details-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Wore<span>Buy</span></a>
+  <div class="nav-links">
+    <a href="#">Explore</a>
+    <a href="#">Creators</a>
+    <a href="#">New In</a>
+    <a href="#">Sell</a>
+  </div>
+  <div class="nav-right">
+    <a href="worebuy-auth.html" class="btn-outline">Sign in</a>
+    <a href="worebuy-auth.html" class="btn-blue">Join free</a>
+    <button class="cart-pill" onclick="void(0)">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Cart <span class="cart-badge" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span>›</span>
+  <a href="#">Instruments</a>
+  <span>›</span>
+  <span style="color:var(--white2)">Fender Stratocaster Tour Guitar</span>
+</div>
+
+<!-- MAIN PRODUCT SECTION -->
+<div class="product-wrap">
+
+  <!-- LEFT: GALLERY -->
+  <div class="gallery">
+    <div class="gallery-main">
+      <div class="verified-badge">Verified authentic</div>
+      <div class="cert-badge" onclick="window.location='worebuy-certificate.html'">◈ Certificate →</div>
+      🎸
+    </div>
+    <div class="gallery-thumbs">
+      <div class="thumb active">🎸</div>
+      <div class="thumb">📸</div>
+      <div class="thumb">🏷️</div>
+      <div class="thumb">📜</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: INFO -->
+  <div class="product-info">
+
+    <div class="product-top">
+      <div class="product-by">Alex Ruiz · Instruments</div>
+      <h1 class="product-name">Fender Stratocaster<br>2023 Tour Guitar</h1>
+      <p class="product-story">"I played this at every single show of the summer tour. It has the scratches to prove it — each one a story. I can't keep it forever, so I want it to go to someone who'll love it the way I did."</p>
+    </div>
+
+    <!-- PRICE + STOCK -->
+    <div class="price-row">
+      <span class="price-big">€1,200</span>
+      <span class="stock-tag">⚡ 1 left</span>
+    </div>
+
+    <!-- SEEN ON — PLATFORM LINKS -->
+    <div class="seen-on">
+      <div class="seen-on-title">Seen on</div>
+      <div class="platform-links">
+
+        <!-- OnlyFans -->
+        <a href="https://onlyfans.com/alexruiz" target="_blank" rel="noopener" class="platform-btn">
+          <div class="platform-icon of">
+            <!-- OnlyFans logo SVG -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 4.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15zm0 2.5a5 5 0 1 0 0 10A5 5 0 0 0 12 7z"/></svg>
+          </div>
+          <div class="platform-text">
+            <span class="platform-name">OnlyFans</span>
+            <span class="platform-desc">The video where I first showed this guitar</span>
+          </div>
+          <span class="platform-arrow">↗</span>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://instagram.com/alexruiz" target="_blank" rel="noopener" class="platform-btn">
+          <div class="platform-icon instagram">
+            <!-- Instagram logo SVG -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </div>
+          <div class="platform-text">
+            <span class="platform-name">Instagram</span>
+            <span class="platform-desc">Tour behind the scenes with this guitar</span>
+          </div>
+          <span class="platform-arrow">↗</span>
+        </a>
+
+        <!-- Fansly -->
+        <a href="https://fansly.com/alexruiz" target="_blank" rel="noopener" class="platform-btn">
+          <div class="platform-icon fansly">
+            <!-- Fansly — generic "F" icon -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><text x="4" y="18" font-size="16" font-weight="bold" font-family="Arial" fill="white">F</text></svg>
+          </div>
+          <div class="platform-text">
+            <span class="platform-name">Fansly</span>
+            <span class="platform-desc">Exclusive post: the last show of the tour</span>
+          </div>
+          <span class="platform-arrow">↗</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- OBJECT DETAILS -->
+    <div class="details-grid">
+      <div class="detail-item"><div class="detail-label">Category</div><div class="detail-val">Instrument</div></div>
+      <div class="detail-item"><div class="detail-label">Condition</div><div class="detail-val">Played — good</div></div>
+      <div class="detail-item"><div class="detail-label">Year</div><div class="detail-val">2021</div></div>
+      <div class="detail-item"><div class="detail-label">Ships from</div><div class="detail-val">Madrid, ES</div></div>
+      <div class="detail-item"><div class="detail-label">Authenticity</div><div class="detail-val" style="color:var(--green)">✓ Certified</div></div>
+      <div class="detail-item"><div class="detail-label">Availability</div><div class="detail-val" style="color:var(--red)">1 of 1</div></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-block">
+      <button class="btn-buy" onclick="addToCart()">Add to cart — €1,200</button>
+      <button class="btn-wish">♡ Add to wishlist</button>
+      <p class="cta-note">🔒 Secure checkout · Address only revealed after payment · Blind connection protected</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CREATOR CARD -->
+    <a href="worebuy-creator.html" class="creator-card">
+      <div class="creator-av">AR</div>
+      <div class="creator-info">
+        <div class="creator-name">Alex Ruiz</div>
+        <div class="creator-handle">@alexruiz</div>
+        <div class="creator-meta">
+          <span class="creator-stat">8 objects</span>
+          <span class="creator-stat">⭐ 4.9</span>
+          <span class="creator-stat">✓ Verified</span>
+        </div>
+      </div>
+      <span class="creator-arrow">→</span>
+    </a>
+
+  </div>
+</div>
+
+<!-- BELOW FOLD -->
+<div class="below-fold">
+
+  <!-- REVIEWS -->
+  <div>
+    <h2 class="section-title">Buyer reviews</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Exactly as described. The certificate is beautiful and the packaging was incredible. Alex even included a handwritten note."</p>
+        <div class="review-by">— María J., verified buyer</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"I've bought from WoreBuy twice now. The authenticity process gives me confidence that this is the real thing. Highly recommend."</p>
+        <div class="review-by">— Carlos M., verified buyer</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"Fast shipping, great communication. The object matches the photos perfectly. Already looking at more from this creator."</p>
+        <div class="review-by">— Laura P., verified buyer</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MORE FROM THIS CREATOR -->
+  <div>
+    <h2 class="section-title">More from Alex Ruiz</h2>
+    <div class="more-grid">
+      <div class="product"><div class="p-img">🎹<div class="verified">✓ Verified</div></div><div class="p-body"><div class="p-who">Alex Ruiz</div><div class="p-name">Roland keyboard, 2022 studio sessions</div><div class="p-foot"><span class="p-price">€850</span><span class="p-stock">1 left</span></div></div></div>
+      <div class="product"><div class="p-img">🎤<div class="verified">✓ Verified</div></div><div class="p-body"><div class="p-who">Alex Ruiz</div><div class="p-name">Shure SM7B mic — used in 3 albums</div><div class="p-foot"><span class="p-price">€320</span><span class="p-stock">1 left</span></div></div></div>
+      <div class="product"><div class="p-img">🎧<div class="verified">✓ Verified</div></div><div class="p-body"><div class="p-who">Alex Ruiz</div><div class="p-name">Sony WH-1000XM5 headphones</div><div class="p-foot"><span class="p-price">€180</span><span class="p-stock">1 left</span></div></div></div>
+      <div class="product"><div class="p-img">🧢<div class="verified">✓ Verified</div></div><div class="p-body"><div class="p-who">Alex Ruiz</div><div class="p-name">Cap from the 2023 world tour</div><div class="p-foot"><span class="p-price">€95</span><span class="p-stock">1 left</span></div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div><div class="footer-logo">Wore<span>Buy</span></div><div class="footer-tag">Own what the people you follow once held.</div></div>
+  <div><div class="footer-col-title">Explore</div><div class="footer-links"><a href="#">New objects</a><a href="#">Featured creators</a><a href="#">Instruments</a><a href="#">Clothing</a></div></div>
+  <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="#">How it works</a><a href="#">Authentication</a><a href="#">Shipping</a><a href="#">Contact</a></div></div>
+  <div><div class="footer-col-title">Creators</div><div class="footer-links"><a href="#">Create profile</a><a href="#">Seller dashboard</a><a href="#">Verification</a><a href="#">Terms</a></div></div>
+  <div class="footer-bottom"><span class="footer-copy">© 2026 WoreBuy. All rights reserved.</span><span class="footer-tagline">Own what they wore.</span></div>
+</footer>
+
+<script>
+function addToCart(){
+  const c=document.getElementById('cartCount');
+  c.textContent=parseInt(c.textContent)+1;
+  c.style.transform='scale(1.5)';
+  setTimeout(()=>c.style.transform='scale(1)',200);
+  const btn=document.querySelector('.btn-buy');
+  btn.textContent='✓ Added to cart';
+  btn.style.background='var(--green)';
+  setTimeout(()=>{btn.textContent='Add to cart — €1,200';btn.style.background=''},2000);
+}
+document.querySelectorAll('.thumb').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.thumb').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
