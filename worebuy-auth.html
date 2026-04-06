@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — WoreBuy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0b0f1a;--navy2:#111827;--navy3:#1a2235;--navy4:#222d42;
+  --blue:#3b82f6;--blue-light:#60a5fa;--blue-dim:rgba(59,130,246,0.12);--blue-border:rgba(59,130,246,0.25);
+  --white:#f8f9fc;--white2:rgba(248,249,252,0.72);--white3:rgba(248,249,252,0.38);--white4:rgba(248,249,252,0.14);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --green:#10b981;--red:#ef4444;
+  --serif:'Libre Baskerville',Georgia,serif;--sans:'Plus Jakarta Sans',sans-serif;
+}
+html,body{height:100%}
+body{background:var(--navy);color:var(--white);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+
+/* LEFT PANEL */
+.left{background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;padding:2.5rem;position:relative;overflow:hidden}
+.left-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 60%,rgba(59,130,246,0.1) 0%,transparent 60%),radial-gradient(ellipse at 80% 10%,rgba(96,165,250,0.06) 0%,transparent 50%);pointer-events:none}
+.left-pattern{position:absolute;inset:0;opacity:0.03;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,255,255,1) 40px,rgba(255,255,255,1) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,1) 40px,rgba(255,255,255,1) 41px);pointer-events:none}
+.left-logo{position:relative;z-index:1}
+.logo{font-family:var(--sans);font-size:1.25rem;font-weight:700;color:var(--white);text-decoration:none}
+.logo span{color:var(--blue-light)}
+.left-content{position:relative;z-index:1}
+.left-title{font-family:var(--serif);font-size:2.2rem;font-weight:700;line-height:1.15;color:var(--white);margin-bottom:1.25rem;letter-spacing:-0.02em}
+.left-title em{font-style:italic;color:var(--blue-light)}
+.left-sub{font-size:0.92rem;color:var(--white2);line-height:1.75;margin-bottom:2rem;max-width:360px}
+.testimonial{background:var(--navy3);border:1px solid var(--border2);border-radius:12px;padding:1.25rem}
+.test-text{font-family:var(--serif);font-style:italic;font-size:0.9rem;color:var(--white2);line-height:1.7;margin-bottom:0.75rem}
+.test-author{display:flex;align-items:center;gap:0.75rem}
+.test-av{width:32px;height:32px;border-radius:50%;background:var(--blue-dim);border:1px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(--blue-light)}
+.test-name{font-size:0.8rem;font-weight:600;color:var(--white)}
+.test-role{font-size:0.7rem;color:var(--white3)}
+.left-stats{display:flex;gap:2rem;position:relative;z-index:1}
+.lst-val{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--white);display:block;line-height:1;margin-bottom:0.2rem}
+.lst-lbl{font-size:0.68rem;font-weight:500;color:var(--white3);text-transform:uppercase;letter-spacing:0.08em}
+
+/* RIGHT PANEL */
+.right{display:flex;align-items:center;justify-content:center;padding:2.5rem}
+.auth-box{width:100%;max-width:400px}
+.auth-tabs{display:flex;gap:0;background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:2rem}
+.auth-tab{flex:1;font-family:var(--sans);font-size:0.82rem;font-weight:600;background:transparent;border:none;border-radius:8px;padding:0.5rem;color:var(--white3);cursor:pointer;transition:all 0.2s}
+.auth-tab.on{background:var(--navy3);color:var(--white);border:1px solid var(--border2)}
+
+/* ROLE SELECTOR */
+.role-selector{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem}
+.role-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:1.1rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.role-card:hover{border-color:var(--border2)}
+.role-card.selected{border-color:var(--blue-border);background:var(--blue-dim)}
+.role-icon{font-size:1.5rem;margin-bottom:0.5rem;display:block}
+.role-title{font-size:0.85rem;font-weight:600;color:var(--white);margin-bottom:0.2rem}
+.role-desc{font-size:0.7rem;color:var(--white3);line-height:1.4}
+
+/* FORM */
+.form-group{margin-bottom:1rem}
+.form-label{display:block;font-size:0.78rem;font-weight:600;color:var(--white2);margin-bottom:0.4rem}
+.form-input{width:100%;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:0.7rem 0.9rem;color:var(--white);font-family:var(--sans);font-size:0.88rem;outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--blue-border)}
+.form-input::placeholder{color:var(--white4)}
+.form-input.error{border-color:var(--red)}
+.error-msg{font-size:0.72rem;color:var(--red);margin-top:0.3rem}
+.password-wrap{position:relative}
+.password-toggle{position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--white3);cursor:pointer;font-size:0.8rem;transition:color 0.2s}
+.password-toggle:hover{color:var(--white)}
+
+.form-divider{display:flex;align-items:center;gap:0.75rem;margin:1.25rem 0}
+.form-divider span{font-size:0.72rem;color:var(--white3);white-space:nowrap}
+.form-divider::before,.form-divider::after{content:'';flex:1;height:0.5px;background:var(--border2)}
+
+.btn-submit{width:100%;font-family:var(--sans);font-size:0.9rem;font-weight:600;color:white;background:var(--blue);border:none;border-radius:10px;padding:0.85rem;cursor:pointer;transition:all 0.2s;margin-bottom:1rem}
+.btn-submit:hover{background:var(--blue-light)}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed}
+
+.btn-social{width:100%;font-family:var(--sans);font-size:0.85rem;font-weight:500;color:var(--white2);background:transparent;border:1px solid var(--border2);border-radius:10px;padding:0.75rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:0.5rem}
+.btn-social:hover{border-color:var(--blue-border);color:var(--white)}
+
+.auth-footer{text-align:center;font-size:0.78rem;color:var(--white3);margin-top:1.25rem}
+.auth-footer a{color:var(--blue-light);text-decoration:none;font-weight:600}
+.auth-footer a:hover{color:var(--white)}
+
+.terms{font-size:0.7rem;color:var(--white4);text-align:center;line-height:1.5;margin-top:0.75rem}
+.terms a{color:var(--white3);text-decoration:none}
+.terms a:hover{color:var(--white)}
+
+/* SUCCESS STATE */
+.success-state{text-align:center;padding:2rem 0}
+.success-icon{font-size:3rem;margin-bottom:1rem;display:block}
+.success-title{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:0.5rem}
+.success-sub{font-size:0.88rem;color:var(--white2);line-height:1.7;margin-bottom:1.5rem}
+
+/* FORGOT */
+.forgot-link{font-size:0.75rem;color:var(--white3);text-decoration:none;transition:color 0.2s;float:right;margin-top:-0.2rem}
+.forgot-link:hover{color:var(--blue-light)}
+
+/* STRENGTH */
+.strength-bar{height:3px;border-radius:2px;background:var(--border2);margin-top:0.5rem;overflow:hidden}
+.strength-fill{height:100%;border-radius:2px;transition:all 0.3s;width:0}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.auth-box{animation:fadeUp 0.5s ease both}
+.left-content{animation:fadeUp 0.5s ease 0.1s both}
+
+@media(max-width:768px){
+  body{grid-template-columns:1fr}
+  .left{display:none}
+  .right{padding:2rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- LEFT -->
+<div class="left">
+  <div class="left-bg"></div>
+  <div class="left-pattern"></div>
+  <div class="left-logo"><a href="index.html" class="logo">Wore<span>Buy</span></a></div>
+  <div class="left-content">
+    <h1 class="left-title">Own what your<br><em>favourite creators</em><br>once held</h1>
+    <p class="left-sub">Join thousands of fans buying authenticated objects directly from the creators they follow. Every piece comes with a story.</p>
+    <div class="testimonial">
+      <div class="test-text">"I bought Alex Ruiz's tour guitar. It came with a handwritten note and the certificate. Best purchase of my life."</div>
+      <div class="test-author">
+        <div class="test-av">MG</div>
+        <div>
+          <div class="test-name">María García</div>
+          <div class="test-role">Buyer · Madrid</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="left-stats">
+    <div><span class="lst-val">200+</span><span class="lst-lbl">Creators</span></div>
+    <div><span class="lst-val">1,800+</span><span class="lst-lbl">Objects</span></div>
+    <div><span class="lst-val">100%</span><span class="lst-lbl">Verified</span></div>
+  </div>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+  <div class="auth-box">
+
+    <!-- TABS -->
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tabLogin" onclick="switchTab('login')">Sign in</button>
+      <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Create account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          Password
+          <a href="#" class="forgot-link" onclick="showForgot()">Forgot password?</a>
+        </label>
+        <div class="password-wrap">
+          <input class="form-input" type="password" id="loginPassword" placeholder="••••••••">
+          <button class="password-toggle" onclick="togglePassword('loginPassword', this)">Show</button>
+        </div>
+      </div>
+      <button class="btn-submit" onclick="handleLogin()">Sign in</button>
+      <div class="form-divider"><span>or continue with</span></div>
+      <button class="btn-social" onclick="socialLogin('Google')">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-footer">Don't have an account? <a onclick="switchTab('register')">Create one free</a></div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none">
+      <div class="role-selector">
+        <div class="role-card selected" id="roleBuyer" onclick="selectRole('buyer')">
+          <span class="role-icon">🛍️</span>
+          <div class="role-title">I'm a buyer</div>
+          <div class="role-desc">Browse and buy objects from creators</div>
+        </div>
+        <div class="role-card" id="roleCreator" onclick="selectRole('creator')">
+          <span class="role-icon">⭐</span>
+          <div class="role-title">I'm a creator</div>
+          <div class="role-desc">Sell objects to your fans</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Full name</label>
+        <input class="form-input" type="text" id="regName" placeholder="Alex Ruiz">
+      </div>
+      <div class="form-group" id="handleGroup" style="display:none">
+        <label class="form-label">Username <span style="color:var(--white3);font-weight:400">(your public URL)</span></label>
+        <div style="position:relative">
+          <span style="position:absolute;left:0.9rem;top:50%;transform:translateY(-50%);font-size:0.82rem;color:var(--white3)">worebuy.com/</span>
+          <input class="form-input" type="text" id="regHandle" placeholder="alexruiz" style="padding-left:7.5rem">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="regEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="password-wrap">
+          <input class="form-input" type="password" id="regPassword" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
+          <button class="password-toggle" onclick="togglePassword('regPassword', this)">Show</button>
+        </div>
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      </div>
+      <button class="btn-submit" onclick="handleRegister()">Create account</button>
+      <div class="form-divider"><span>or continue with</span></div>
+      <button class="btn-social" onclick="socialLogin('Google')">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+      <div class="terms">By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></div>
+      <div class="auth-footer">Already have an account? <a onclick="switchTab('login')">Sign in</a></div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div id="successState" style="display:none">
+      <div class="success-state">
+        <span class="success-icon">🎉</span>
+        <div class="success-title" id="successTitle">Welcome to WoreBuy!</div>
+        <div class="success-sub" id="successSub">Your account has been created. Check your email to verify your address.</div>
+        <button class="btn-submit" id="successBtn" onclick="goToDashboard()">Go to dashboard</button>
+      </div>
+    </div>
+
+    <!-- FORGOT PASSWORD -->
+    <div id="forgotForm" style="display:none">
+      <div style="margin-bottom:1.5rem">
+        <button onclick="showLogin()" style="background:none;border:none;color:var(--white3);cursor:pointer;font-size:0.82rem;display:flex;align-items:center;gap:0.4rem;padding:0;font-family:var(--sans)">← Back to sign in</button>
+      </div>
+      <div style="margin-bottom:1.5rem">
+        <div style="font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--white);margin-bottom:0.4rem">Reset password</div>
+        <div style="font-size:0.85rem;color:var(--white2);line-height:1.6">Enter your email and we'll send you a link to reset your password.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="forgotEmail" placeholder="you@example.com">
+      </div>
+      <button class="btn-submit" onclick="handleForgot()">Send reset link</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let selectedRole = 'buyer';
+
+function switchTab(tab) {
+  document.getElementById('tabLogin').classList.toggle('on', tab === 'login');
+  document.getElementById('tabRegister').classList.toggle('on', tab === 'register');
+  document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('forgotForm').style.display = 'none';
+  document.getElementById('successState').style.display = 'none';
+}
+
+function selectRole(role) {
+  selectedRole = role;
+  document.getElementById('roleBuyer').classList.toggle('selected', role === 'buyer');
+  document.getElementById('roleCreator').classList.toggle('selected', role === 'creator');
+  document.getElementById('handleGroup').style.display = role === 'creator' ? 'block' : 'none';
+}
+
+function togglePassword(id, btn) {
+  const input = document.getElementById(id);
+  const show = input.type === 'password';
+  input.type = show ? 'text' : 'password';
+  btn.textContent = show ? 'Hide' : 'Show';
+}
+
+function checkStrength(val) {
+  const fill = document.getElementById('strengthFill');
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const colors = ['#ef4444','#f59e0b','#3b82f6','#10b981'];
+  const widths = ['25%','50%','75%','100%'];
+  fill.style.width = val ? widths[score-1] || '10%' : '0';
+  fill.style.background = val ? colors[score-1] || '#ef4444' : 'transparent';
+}
+
+function handleLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPassword').value;
+  if (!email || !pass) { alert('Please fill in all fields'); return; }
+  showSuccess('Welcome back!', 'You\'ve signed in successfully.', 'buyer');
+}
+
+function handleRegister() {
+  const name = document.getElementById('regName').value;
+  const email = document.getElementById('regEmail').value;
+  const pass = document.getElementById('regPassword').value;
+  if (!name || !email || !pass) { alert('Please fill in all fields'); return; }
+  if (pass.length < 8) { alert('Password must be at least 8 characters'); return; }
+  showSuccess(
+    `Welcome, ${name.split(' ')[0]}!`,
+    selectedRole === 'creator'
+      ? 'Your creator account is ready. Let\'s set up your profile and list your first object.'
+      : 'Your account is ready. Start browsing objects from your favourite creators.',
+    selectedRole
+  );
+}
+
+function showSuccess(title, sub, role) {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'none';
+  document.getElementById('forgotForm').style.display = 'none';
+  document.getElementById('successState').style.display = 'block';
+  document.getElementById('successTitle').textContent = title;
+  document.getElementById('successSub').textContent = sub;
+  document.getElementById('successBtn').textContent = role === 'creator' ? 'Go to dashboard →' : 'Start browsing →';
+}
+
+function goToDashboard() {
+  window.location.href = selectedRole === 'creator' ? 'worebuy-dashboard.html' : 'index.html';
+}
+
+function showForgot() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('forgotForm').style.display = 'block';
+}
+
+function showLogin() {
+  document.getElementById('forgotForm').style.display = 'none';
+  document.getElementById('loginForm').style.display = 'block';
+}
+
+function handleForgot() {
+  const email = document.getElementById('forgotEmail').value;
+  if (!email) { alert('Please enter your email'); return; }
+  showSuccess('Check your email', `We've sent a reset link to ${email}`, 'buyer');
+}
+
+function socialLogin(provider) {
+  alert(`${provider} login coming soon — requires Supabase connection`);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — WoreBuy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0b0f1a;--navy2:#111827;--navy3:#1a2235;--navy4:#222d42;
+  --blue:#3b82f6;--blue-light:#60a5fa;--blue-dim:rgba(59,130,246,0.12);--blue-border:rgba(59,130,246,0.25);
+  --white:#f8f9fc;--white2:rgba(248,249,252,0.72);--white3:rgba(248,249,252,0.38);--white4:rgba(248,249,252,0.14);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --green:#10b981;--red:#ef4444;--amber:#f59e0b;
+  --serif:'Libre Baskerville',Georgia,serif;--sans:'Plus Jakarta Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:240px;min-height:100vh;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0}
+.sidebar-logo{padding:1.5rem 1.5rem 1rem;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--sans);font-size:1.1rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:-0.02em}
+.logo span{color:var(--blue-light)}
+.sidebar-user{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem}
+.user-av{width:36px;height:36px;border-radius:50%;background:var(--navy3);border:2px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:var(--blue-light);flex-shrink:0}
+.user-name{font-size:0.82rem;font-weight:600;color:var(--white)}
+.user-handle{font-size:0.7rem;color:var(--white3)}
+.sidebar-nav{padding:1rem 0.75rem;flex:1}
+.nav-section{font-size:0.6rem;font-weight:700;color:var(--white4);text-transform:uppercase;letter-spacing:0.12em;padding:0 0.75rem;margin:1rem 0 0.4rem}
+.nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.75rem;border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:0.82rem;font-weight:500;color:var(--white3);text-decoration:none;margin-bottom:2px}
+.nav-item:hover{background:var(--navy3);color:var(--white)}
+.nav-item.active{background:var(--blue-dim);color:var(--blue-light);border:1px solid var(--blue-border)}
+.nav-icon{width:16px;height:16px;flex-shrink:0;opacity:0.7}
+.nav-badge{margin-left:auto;background:var(--blue);color:white;font-size:0.62rem;font-weight:700;padding:0.1rem 0.45rem;border-radius:99px}
+.sidebar-bottom{padding:1rem 1.5rem;border-top:1px solid var(--border)}
+.view-profile-btn{display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;font-weight:500;color:var(--white3);text-decoration:none;transition:color 0.2s}
+.view-profile-btn:hover{color:var(--blue-light)}
+
+/* MAIN */
+.main{margin-left:240px;flex:1;min-height:100vh}
+.topbar{height:64px;background:rgba(11,15,26,0.95);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:50;backdrop-filter:blur(20px)}
+.page-title{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--white)}
+.topbar-right{display:flex;align-items:center;gap:0.75rem}
+.btn-primary{font-family:var(--sans);font-size:0.82rem;font-weight:600;color:white;background:var(--blue);border:none;border-radius:8px;padding:0.5rem 1.1rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem}
+.btn-primary:hover{background:var(--blue-light)}
+.btn-secondary{font-family:var(--sans);font-size:0.82rem;font-weight:500;color:var(--white2);background:transparent;border:1px solid var(--border2);border-radius:8px;padding:0.5rem 1rem;cursor:pointer;transition:all 0.2s}
+.btn-secondary:hover{border-color:var(--blue-border);color:var(--white)}
+
+/* CONTENT */
+.content{padding:2rem}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.stat-label{font-size:0.7rem;font-weight:600;color:var(--white3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem}
+.stat-value{font-family:var(--serif);font-size:1.75rem;font-weight:700;color:var(--white);line-height:1;margin-bottom:0.4rem}
+.stat-change{font-size:0.72rem;font-weight:600}
+.stat-change.up{color:var(--green)}
+.stat-change.down{color:var(--red)}
+
+/* SECTION */
+.section{margin-bottom:2rem}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.section-title{font-size:1rem;font-weight:600;color:var(--white)}
+.section-link{font-size:0.75rem;font-weight:600;color:var(--blue-light);text-decoration:none;cursor:pointer;transition:color 0.2s}
+.section-link:hover{color:var(--white)}
+
+/* OBJECTS TABLE */
+.objects-table{background:var(--navy2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.table-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 100px;gap:1rem;padding:0.75rem 1.25rem;border-bottom:1px solid var(--border);font-size:0.68rem;font-weight:700;color:var(--white3);text-transform:uppercase;letter-spacing:0.08em}
+.table-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 100px;gap:1rem;padding:0.9rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s}
+.table-row:last-child{border-bottom:none}
+.table-row:hover{background:var(--navy3)}
+.obj-info{display:flex;align-items:center;gap:0.75rem}
+.obj-thumb{width:40px;height:40px;border-radius:8px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;border:1px solid var(--border);flex-shrink:0}
+.obj-title{font-size:0.85rem;font-weight:600;color:var(--white);margin-bottom:0.15rem}
+.obj-meta{font-size:0.7rem;color:var(--white3)}
+.price-val{font-size:0.88rem;font-weight:600;color:var(--white)}
+.status-pill{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.68rem;font-weight:600;padding:0.25rem 0.65rem;border-radius:99px}
+.status-active{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);color:#10b981}
+.status-sold{background:rgba(248,249,252,0.06);border:1px solid var(--border);color:var(--white3)}
+.status-draft{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:var(--amber)}
+.row-actions{display:flex;gap:0.4rem}
+.icon-btn{width:30px;height:30px;border-radius:6px;background:transparent;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;font-size:0.75rem;color:var(--white3)}
+.icon-btn:hover{border-color:var(--blue-border);color:var(--blue-light);background:var(--blue-dim)}
+
+/* ORDERS */
+.orders-list{background:var(--navy2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.order-row{display:grid;grid-template-columns:auto 1fr 1fr 1fr 120px;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s}
+.order-row:last-child{border-bottom:none}
+.order-row:hover{background:var(--navy3)}
+.order-id{font-size:0.72rem;font-weight:700;color:var(--blue-light);font-family:var(--font-mono,'monospace')}
+.order-buyer{font-size:0.82rem;font-weight:600;color:var(--white)}
+.order-item{font-size:0.75rem;color:var(--white3)}
+.order-amount{font-size:0.88rem;font-weight:700;color:var(--green)}
+.order-date{font-size:0.72rem;color:var(--white3)}
+.order-status{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.68rem;font-weight:600;padding:0.25rem 0.65rem;border-radius:99px}
+.order-shipped{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);color:var(--blue-light)}
+.order-delivered{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);color:#10b981}
+.order-pending{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:var(--amber)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--navy2);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;animation:modalIn 0.25s ease}
+@keyframes modalIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--white)}
+.modal-close{width:32px;height:32px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--white3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all 0.15s}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:1.5rem}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.75rem;justify-content:flex-end}
+
+/* FORM */
+.form-group{margin-bottom:1.25rem}
+.form-label{display:block;font-size:0.78rem;font-weight:600;color:var(--white2);margin-bottom:0.5rem}
+.form-label span{color:var(--white3);font-weight:400}
+.form-input{width:100%;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:0.65rem 0.9rem;color:var(--white);font-family:var(--sans);font-size:0.88rem;outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--blue-border)}
+.form-input::placeholder{color:var(--white4)}
+.form-textarea{width:100%;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:0.65rem 0.9rem;color:var(--white);font-family:var(--sans);font-size:0.88rem;outline:none;transition:border-color 0.2s;resize:vertical;min-height:90px}
+.form-textarea:focus{border-color:var(--blue-border)}
+.form-textarea::placeholder{color:var(--white4)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-select{width:100%;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:0.65rem 0.9rem;color:var(--white);font-family:var(--sans);font-size:0.88rem;outline:none;cursor:pointer;transition:border-color 0.2s;appearance:none}
+.form-select:focus{border-color:var(--blue-border)}
+
+/* PHOTO UPLOAD */
+.photo-upload-area{border:2px dashed var(--border2);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;margin-bottom:1rem}
+.photo-upload-area:hover,.photo-upload-area.dragover{border-color:var(--blue-border);background:var(--blue-dim)}
+.photo-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2rem;margin-bottom:0.5rem;display:block}
+.upload-title{font-size:0.88rem;font-weight:600;color:var(--white);margin-bottom:0.25rem}
+.upload-sub{font-size:0.75rem;color:var(--white3)}
+.photos-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem}
+.photo-thumb{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--navy3);border:1px solid var(--border)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-remove{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.7);border:none;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.65rem;transition:background 0.15s}
+.photo-remove:hover{background:var(--red)}
+.photo-main-badge{position:absolute;bottom:4px;left:4px;background:var(--blue);color:white;font-size:0.6rem;font-weight:700;padding:0.15rem 0.4rem;border-radius:4px}
+
+/* OF LINK */
+.of-link-input{display:flex;gap:0.5rem;align-items:center}
+.of-preview{background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;display:flex;align-items:center;gap:0.75rem;margin-top:0.5rem}
+.of-preview-icon{width:32px;height:32px;border-radius:6px;background:var(--blue-dim);border:1px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0}
+.of-preview-title{font-size:0.8rem;font-weight:600;color:var(--white)}
+.of-preview-url{font-size:0.7rem;color:var(--blue-light)}
+
+/* EARNINGS CHART placeholder */
+.chart-placeholder{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:1.5rem;height:200px;display:flex;flex-direction:column;justify-content:space-between}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;flex:1;padding-top:1rem}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--blue-dim);border:1px solid var(--blue-border);transition:all 0.3s;cursor:pointer}
+.bar:hover{background:var(--blue);border-color:var(--blue)}
+.bar-label{font-size:0.62rem;color:var(--white3)}
+.chart-footer{display:flex;justify-content:space-between;align-items:center;padding-top:0.75rem;border-top:1px solid var(--border);margin-top:0.5rem}
+.chart-total{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--white)}
+.chart-sub{font-size:0.72rem;color:var(--green);font-weight:600}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.stats-grid{animation:fadeUp 0.4s ease both}
+.section{animation:fadeUp 0.4s ease 0.1s both}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="index.html" class="logo">Wore<span>Buy</span></a>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-av">AR</div>
+    <div>
+      <div class="user-name">Alex Ruiz</div>
+      <div class="user-handle">@alexruiz</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <a class="nav-item active" onclick="showPage('dashboard')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <div class="nav-section">Selling</div>
+    <a class="nav-item" onclick="showPage('objects')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      My objects
+      <span class="nav-badge">8</span>
+    </a>
+    <a class="nav-item" onclick="showPage('orders')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Orders
+      <span class="nav-badge">3</span>
+    </a>
+    <a class="nav-item" onclick="showPage('earnings')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Earnings
+    </a>
+    <div class="nav-section">Profile</div>
+    <a class="nav-item" onclick="showPage('profile')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Edit profile
+    </a>
+    <a class="nav-item" onclick="showPage('of')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      OF connection
+    </a>
+  </nav>
+  <div class="sidebar-bottom">
+    <a href="worebuy-creator.html" class="view-profile-btn">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      View public profile
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="page-title" id="pageTitle">Dashboard</div>
+    <div class="topbar-right">
+      <button class="btn-secondary">Export data</button>
+      <button class="btn-primary" onclick="openModal()">+ List new object</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total earnings</div>
+        <div class="stat-value">€18.2k</div>
+        <div class="stat-change up">↑ 24% this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Objects sold</div>
+        <div class="stat-value">142</div>
+        <div class="stat-change up">↑ 8 this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active listings</div>
+        <div class="stat-value">5</div>
+        <div class="stat-change" style="color:var(--white3)">3 sold out</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg. rating</div>
+        <div class="stat-value">4.9</div>
+        <div class="stat-change up">89 reviews</div>
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Earnings — last 6 months</div>
+      </div>
+      <div class="chart-placeholder">
+        <div class="chart-bars">
+          <div class="bar-wrap"><div class="bar" style="height:45%"></div><div class="bar-label">Nov</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:60%"></div><div class="bar-label">Dec</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:38%"></div><div class="bar-label">Jan</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:72%"></div><div class="bar-label">Feb</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:55%"></div><div class="bar-label">Mar</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:88%;background:var(--blue);border-color:var(--blue)"></div><div class="bar-label" style="color:var(--blue-light)">Apr</div></div>
+        </div>
+        <div class="chart-footer">
+          <div>
+            <div class="chart-total">€3,840</div>
+            <div class="stat-label">April 2026</div>
+          </div>
+          <div class="chart-sub">↑ Best month yet</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJECTS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">My objects</div>
+        <span class="section-link" onclick="openModal()">+ Add new</span>
+      </div>
+      <div class="objects-table">
+        <div class="table-header">
+          <span>Object</span>
+          <span>Price</span>
+          <span>Status</span>
+          <span>OF link</span>
+          <span>Actions</span>
+        </div>
+        <div class="table-row">
+          <div class="obj-info"><div class="obj-thumb">🎸</div><div><div class="obj-title">Fender Stratocaster</div><div class="obj-meta">Listed 2 weeks ago</div></div></div>
+          <div class="price-val">€1,200</div>
+          <div><span class="status-pill status-active">● Active</span></div>
+          <div><span class="badge" style="background:var(--blue-dim);border:1px solid var(--blue-border);color:var(--blue-light);font-size:0.65rem">Linked</span></div>
+          <div class="row-actions"><button class="icon-btn" title="Edit">✎</button><button class="icon-btn" title="Delete">✕</button></div>
+        </div>
+        <div class="table-row">
+          <div class="obj-info"><div class="obj-thumb">🎹</div><div><div class="obj-title">Roland Keyboard</div><div class="obj-meta">Listed 1 month ago</div></div></div>
+          <div class="price-val">€850</div>
+          <div><span class="status-pill status-active">● Active</span></div>
+          <div><span style="font-size:0.72rem;color:var(--white4)">—</span></div>
+          <div class="row-actions"><button class="icon-btn">✎</button><button class="icon-btn">✕</button></div>
+        </div>
+        <div class="table-row">
+          <div class="obj-info"><div class="obj-thumb">🧥</div><div><div class="obj-title">Leather jacket</div><div class="obj-meta">Listed 6 weeks ago</div></div></div>
+          <div class="price-val">€420</div>
+          <div><span class="status-pill status-active">● Active</span></div>
+          <div><span class="badge" style="background:var(--blue-dim);border:1px solid var(--blue-border);color:var(--blue-light);font-size:0.65rem">Linked</span></div>
+          <div class="row-actions"><button class="icon-btn">✎</button><button class="icon-btn">✕</button></div>
+        </div>
+        <div class="table-row">
+          <div class="obj-info"><div class="obj-thumb">👟</div><div><div class="obj-title">Nike Air Max</div><div class="obj-meta">Sold 3 weeks ago</div></div></div>
+          <div class="price-val">€180</div>
+          <div><span class="status-pill status-sold">Sold</span></div>
+          <div><span class="badge" style="background:var(--blue-dim);border:1px solid var(--blue-border);color:var(--blue-light);font-size:0.65rem">Linked</span></div>
+          <div class="row-actions"><button class="icon-btn">✎</button><button class="icon-btn" style="opacity:0.3;cursor:not-allowed">✕</button></div>
+        </div>
+        <div class="table-row">
+          <div class="obj-info"><div class="obj-thumb">🎸</div><div><div class="obj-title">Gibson Les Paul draft</div><div class="obj-meta">Draft — not published</div></div></div>
+          <div class="price-val">€2,100</div>
+          <div><span class="status-pill status-draft">Draft</span></div>
+          <div><span style="font-size:0.72rem;color:var(--white4)">—</span></div>
+          <div class="row-actions"><button class="icon-btn">✎</button><button class="icon-btn">✕</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Recent orders</div>
+        <span class="section-link">View all →</span>
+      </div>
+      <div class="orders-list">
+        <div class="order-row">
+          <div class="order-id">#WB-0142</div>
+          <div><div class="order-buyer">María García</div><div class="order-item">Fender Stratocaster</div></div>
+          <div><div class="order-amount">+€1,080</div><div class="order-item" style="color:var(--white3)">After 10% commission</div></div>
+          <div class="order-date">Apr 4, 2026</div>
+          <div><span class="order-status order-shipped">Shipped</span></div>
+        </div>
+        <div class="order-row">
+          <div class="order-id">#WB-0141</div>
+          <div><div class="order-buyer">Javier Pérez</div><div class="order-item">Leather jacket</div></div>
+          <div><div class="order-amount">+€378</div><div class="order-item" style="color:var(--white3)">After 10% commission</div></div>
+          <div class="order-date">Apr 1, 2026</div>
+          <div><span class="order-status order-delivered">Delivered</span></div>
+        </div>
+        <div class="order-row">
+          <div class="order-id">#WB-0140</div>
+          <div><div class="order-buyer">Laura Ruiz</div><div class="order-item">Sony WH-1000XM4</div></div>
+          <div><div class="order-amount">+€252</div><div class="order-item" style="color:var(--white3)">After 10% commission</div></div>
+          <div class="order-date">Mar 28, 2026</div>
+          <div><span class="order-status order-pending">Pending</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- MODAL: LIST NEW OBJECT -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">List a new object</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- PHOTOS -->
+      <div class="form-group">
+        <label class="form-label">Photos <span>(drag & drop or click — up to 8)</span></label>
+        <div class="photo-upload-area" id="uploadArea" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+          <input type="file" accept="image/*" multiple onchange="onFileSelect(event)" id="fileInput">
+          <span class="upload-icon">📸</span>
+          <div class="upload-title">Drop photos here or click to browse</div>
+          <div class="upload-sub">JPG, PNG, WEBP · Max 10MB each · First photo = main image</div>
+        </div>
+        <div class="photos-preview" id="photosPreview"></div>
+      </div>
+
+      <!-- TITLE -->
+      <div class="form-group">
+        <label class="form-label">Object title</label>
+        <input class="form-input" type="text" placeholder="e.g. Fender Stratocaster 2023 Tour Guitar">
+      </div>
+
+      <!-- STORY -->
+      <div class="form-group">
+        <label class="form-label">Your story <span>(why is this object special?)</span></label>
+        <textarea class="form-textarea" placeholder="Tell buyers when you used this, what it means to you, and what makes it unique..."></textarea>
+      </div>
+
+      <!-- PRICE + CATEGORY -->
+      <div class="form-row">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Price (€)</label>
+          <input class="form-input" type="number" placeholder="0.00">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Category</label>
+          <select class="form-select">
+            <option value="">Select category</option>
+            <option>Instruments</option>
+            <option>Clothing</option>
+            <option>Tech & gear</option>
+            <option>Art</option>
+            <option>Sport</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- OF LINK -->
+      <div class="form-group" style="margin-top:1.25rem">
+        <label class="form-label">Link to OF content <span>(optional — boosts sales)</span></label>
+        <div class="of-link-input">
+          <input class="form-input" type="url" id="ofLinkInput" placeholder="https://onlyfans.com/yourprofile/post/..." oninput="previewOFLink(this.value)">
+        </div>
+        <div class="of-preview" id="ofPreview" style="display:none">
+          <div class="of-preview-icon">▶</div>
+          <div>
+            <div class="of-preview-title">OF post linked</div>
+            <div class="of-preview-url" id="ofPreviewUrl"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Save as draft</button>
+      <button class="btn-primary" onclick="publishObject()">Publish object</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let photos = [];
+
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  document.getElementById('uploadArea').classList.add('dragover');
+}
+function onDragLeave() {
+  document.getElementById('uploadArea').classList.remove('dragover');
+}
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadArea').classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+}
+function onFileSelect(e) {
+  handleFiles(e.target.files);
+}
+
+function handleFiles(files) {
+  Array.from(files).slice(0, 8 - photos.length).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      photos.push(e.target.result);
+      renderPhotos();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderPhotos() {
+  const preview = document.getElementById('photosPreview');
+  preview.innerHTML = photos.map((src, i) => `
+    <div class="photo-thumb">
+      <img src="${src}" alt="Photo ${i+1}">
+      ${i === 0 ? '<div class="photo-main-badge">Main</div>' : ''}
+      <button class="photo-remove" onclick="removePhoto(${i})">✕</button>
+    </div>
+  `).join('');
+  const area = document.getElementById('uploadArea');
+  area.style.padding = photos.length > 0 ? '1rem' : '';
+  area.style.display = photos.length >= 8 ? 'none' : '';
+}
+
+function removePhoto(i) {
+  photos.splice(i, 1);
+  renderPhotos();
+}
+
+function previewOFLink(val) {
+  const preview = document.getElementById('ofPreview');
+  const urlEl = document.getElementById('ofPreviewUrl');
+  if (val.includes('onlyfans.com') || val.startsWith('http')) {
+    preview.style.display = 'flex';
+    urlEl.textContent = val.length > 50 ? val.slice(0, 50) + '...' : val;
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
+function publishObject() {
+  closeModal();
+  photos = [];
+  renderPhotos();
+  alert('Object published! (Backend connection coming soon)');
+}
+
+function showPage(page) {
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const titles = {dashboard:'Dashboard',objects:'My objects',orders:'Orders',earnings:'Earnings',profile:'Edit profile',of:'OF connection'};
+  document.getElementById('pageTitle').textContent = titles[page] || 'Dashboard';
+}
+</script>
+</body>
+</html>
